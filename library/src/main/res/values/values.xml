@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PerfectTextView"  >
+        <attr name="perfect_drawableStart_width" format="dimension" />
+        <attr name="perfect_drawableStart_height" format="dimension" />
+        <attr name="perfect_drawableStart_padding" format="dimension" />
+
+        <attr name="perfect_drawableTop_width" format="dimension" />
+        <attr name="perfect_drawableTop_height" format="dimension" />
+        <attr name="perfect_drawableTop_padding" format="dimension" />
+
+        <attr name="perfect_drawableEnd_width" format="dimension" />
+        <attr name="perfect_drawableEnd_height" format="dimension" />
+        <attr name="perfect_drawableEnd_padding" format="dimension" />
+
+        <attr name="perfect_drawableBottom_width" format="dimension" />
+        <attr name="perfect_drawableBottom_height" format="dimension" />
+        <attr name="perfect_drawableBottom_padding" format="dimension" />
+
+        <attr name="perfect_drawableLeft_width" format="dimension" />
+        <attr name="perfect_drawableLeft_height" format="dimension" />
+        <attr name="perfect_drawableLeft_padding" format="dimension" />
+
+        <attr name="perfect_drawableRight_width" format="dimension" />
+        <attr name="perfect_drawableRight_height" format="dimension" />
+        <attr name="perfect_drawableRight_padding" format="dimension" />
+
+    </declare-styleable>
+</resources>
