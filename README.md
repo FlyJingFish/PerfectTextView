@@ -90,18 +90,15 @@
 
 binding.hollowTextView.setOnDrawableStartClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartClickListener",Toast.LENGTH_SHORT).show();
-    Log.e("onClickTouch", "单击 setOnDrawableStartClickListener");
 });
 
 binding.hollowTextView.setOnDrawableStartLongClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartLongClickListener",Toast.LENGTH_SHORT).show();
-    Log.e("onClickTouch", "单击 setOnDrawableStartLongClickListener");
     return false;
 });
 
 binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartDoubleClickListener",Toast.LENGTH_SHORT).show();
-    Log.e("onClickTouch", "单击 setOnDrawableStartDoubleClickListener");
 });
 ```
 
