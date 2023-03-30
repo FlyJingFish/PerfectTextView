@@ -1,5 +1,5 @@
 # PerfectTextView
-## 镂空TextView，支持渐变色粗边，支持设置背景
+## 完善了TextView 四个方向的Drawable设置，可在布局中设置大小和间距，并且可以设置点击，双击，长按监听
 
 [![](https://jitpack.io/v/FlyJingFish/PerfectTextView.svg)](https://jitpack.io/#FlyJingFish/PerfectTextView)
 [![GitHub stars](https://img.shields.io/github/stars/FlyJingFish/PerfectTextView.svg)](https://github.com/FlyJingFish/PerfectTextView/stargazers)
