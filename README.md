@@ -87,16 +87,18 @@
 ### 设置监听
 
 ```
-
+//点击左侧图标监听
 binding.hollowTextView.setOnDrawableStartClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartClickListener",Toast.LENGTH_SHORT).show();
 });
 
+//长按左侧图标监听
 binding.hollowTextView.setOnDrawableStartLongClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartLongClickListener",Toast.LENGTH_SHORT).show();
     return false;
 });
 
+//双击左侧图标监听
 binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartDoubleClickListener",Toast.LENGTH_SHORT).show();
 });
