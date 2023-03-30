@@ -84,6 +84,26 @@
 | perfect_drawableBottom_height  | dimension |       下侧图片高度       |
 | perfect_drawableBottom_padding | dimension |     下侧图片距离文本距离     |
 
+### 设置监听
+
+```
+
+binding.hollowTextView.setOnDrawableStartClickListener(v -> {
+    Toast.makeText(this,"setOnDrawableStartClickListener",Toast.LENGTH_SHORT).show();
+    Log.e("onClickTouch", "单击 setOnDrawableStartClickListener");
+});
+
+binding.hollowTextView.setOnDrawableStartLongClickListener(v -> {
+    Toast.makeText(this,"setOnDrawableStartLongClickListener",Toast.LENGTH_SHORT).show();
+    Log.e("onClickTouch", "单击 setOnDrawableStartLongClickListener");
+    return false;
+});
+
+binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
+    Toast.makeText(this,"setOnDrawableStartDoubleClickListener",Toast.LENGTH_SHORT).show();
+    Log.e("onClickTouch", "单击 setOnDrawableStartDoubleClickListener");
+});
+```
 
 # 最后推荐我写的另一个库，轻松实现在应用内点击小图查看大图的动画放大效果
 
