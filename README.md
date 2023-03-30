@@ -8,7 +8,7 @@
 [![GitHub license](https://img.shields.io/github/license/FlyJingFish/PerfectTextView.svg)](https://github.com/FlyJingFish/PerfectTextView/blob/master/LICENSE)
 
 
-<img src="https://github.com/FlyJingFish/PerfectTextView/blob/master/screenshot/Screenshot_20221013_130230.jpg" width="405px" height="842px" alt="show" />
+<img src="https://github.com/FlyJingFish/PerfectTextView/blob/master/screenshot/img.png" width="320px" height="640px" alt="show" />
 
 
 ## 第一步，根目录build.gradle
@@ -25,23 +25,38 @@
 
 ```gradle
     dependencies {
-        implementation 'com.github.FlyJingFish:PerfectTextView:1.0.5'
+        implementation 'com.github.FlyJingFish:PerfectTextView:1.0.0'
     }
 ```
 ## 第三步，使用说明
 
 
 ```xml
-<com.flyjingfish.perfecttextviewlib.PerfectTextView
+ <com.flyjingfish.perfecttextviewlib.PerfectTextView
     android:id="@+id/hollowTextView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingVertical="8dp"
-    android:paddingHorizontal="40dp"
-    android:text="Hello World!"
+    android:text="Hello"
     android:gravity="center"
-    android:textStyle="bold|italic"
-    android:background="@drawable/bg_hollow"
+    android:textStyle="bold"
+    android:padding="10dp"
+    app:perfect_drawableStart_width="40dp"
+    app:perfect_drawableStart_height="40dp"
+    app:perfect_drawableEnd_width="100dp"
+    app:perfect_drawableEnd_height="100dp"
+    app:perfect_drawableTop_width="20dp"
+    app:perfect_drawableTop_height="20dp"
+    app:perfect_drawableBottom_width="100dp"
+    app:perfect_drawableBottom_height="100dp"
+    android:drawablePadding="40dp"
+    app:perfect_drawableStart_padding="20dp"
+    app:perfect_drawableEnd_padding="10dp"
+    app:perfect_drawableTop_padding="30dp"
+    app:perfect_drawableBottom_padding="30dp"
+    android:drawableTop="@mipmap/ic_launcher_round"
+    android:drawableStart="@mipmap/bg_photo"
+    android:drawableEnd="@mipmap/ic_launcher_round"
+    android:drawableBottom="@mipmap/ic_launcher_round"
     android:textSize="30sp"/>
 ```
 

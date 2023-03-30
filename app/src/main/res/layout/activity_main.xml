@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,38 +10,53 @@
         android:id="@+id/ll_hollowTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新版PerfectTextView"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:textSize="30sp"/>
         <com.flyjingfish.perfecttextviewlib.PerfectTextView
             android:id="@+id/hollowTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/purple_700"
-            android:text="Hello"
+            android:text="Hello World!"
             android:gravity="center"
             android:textStyle="bold"
             android:padding="10dp"
+            android:layout_marginTop="10dp"
             app:perfect_drawableStart_width="40dp"
             app:perfect_drawableStart_height="40dp"
-            app:perfect_drawableEnd_width="100dp"
-            app:perfect_drawableEnd_height="100dp"
+            app:perfect_drawableEnd_width="50dp"
+            app:perfect_drawableEnd_height="50dp"
             app:perfect_drawableTop_width="20dp"
             app:perfect_drawableTop_height="20dp"
-            app:perfect_drawableBottom_width="100dp"
-            app:perfect_drawableBottom_height="100dp"
+            app:perfect_drawableBottom_width="50dp"
+            app:perfect_drawableBottom_height="50dp"
             android:drawablePadding="40dp"
-            app:perfect_drawableLeft_padding="10dp"
             app:perfect_drawableStart_padding="20dp"
+            app:perfect_drawableEnd_padding="10dp"
             app:perfect_drawableTop_padding="30dp"
             app:perfect_drawableBottom_padding="30dp"
             android:drawableTop="@mipmap/ic_launcher_round"
-            android:drawableStart="@mipmap/bg_photo"
+            android:drawableStart="@mipmap/ic_launcher_round"
             android:drawableEnd="@mipmap/ic_launcher_round"
             android:drawableBottom="@mipmap/ic_launcher_round"
             android:textSize="30sp"/>
-
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="原生TextView"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textSize="30sp"/>
 <!--        <com.flyjingfish.perfecttextviewlib.PerfectTextView-->
 <!--            android:id="@+id/hollowTextView2"-->
 <!--            android:layout_width="wrap_content"-->
@@ -57,49 +72,50 @@
             android:id="@+id/hollowTextView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello"
+            android:text="Hello World!"
             android:gravity="center"
             android:textStyle="bold"
+            android:background="@color/purple_700"
             android:drawableTop="@mipmap/ic_launcher_round"
-            android:drawableStart="@mipmap/bg_photo"
+            android:drawableStart="@mipmap/ic_launcher_round"
             android:drawableEnd="@mipmap/ic_launcher_round"
             android:drawableBottom="@mipmap/ic_launcher_round"
             android:layout_marginTop="10dp"
             android:textSize="30sp"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="90dp"
-            android:layout_marginEnd="20dp"
-            android:gravity="end"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="10dp"
-                android:layout_marginTop="10dp"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:background="@color/purple_200"
-                android:text="button1"/>
-            <TextView
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:paddingVertical="10dp"
-                android:background="@drawable/bg_hollow2"
-                android:text="button2"/>
-        </LinearLayout>
+
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="end"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@color/purple_200"
+            android:text="button1"/>
+        <TextView
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:paddingVertical="10dp"
+            android:background="@drawable/bg_hollow2"
+            android:text="button2"/>
+    </LinearLayout>
 
-
-</ScrollView>
+</RelativeLayout>
