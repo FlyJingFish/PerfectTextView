@@ -86,7 +86,7 @@
 
 ### 设置监听
 
-```
+```java
 //点击左侧图标监听
 binding.hollowTextView.setOnDrawableStartClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartClickListener",Toast.LENGTH_SHORT).show();
