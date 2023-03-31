@@ -25,7 +25,7 @@
 
 ```gradle
     dependencies {
-        implementation 'com.github.FlyJingFish:PerfectTextView:1.0.0'
+        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.1'
     }
 ```
 ## 第三步，使用说明
@@ -107,6 +107,16 @@ binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartDoubleClickListener",Toast.LENGTH_SHORT).show();
 });
 ```
+
+### 更多功能
+
+
+| attr                      | description |
+|---------------------------|:-----------:|
+| setTextBackground         |   文本区域背景    |
+| setTextBackgroundResource |   文本区域背景    |
+| ssetTextBackgroundColor   |   文本区域背景    |
+| setTextBackgroundScope    | 文本区域背景显示区域  |
 
 # 最后推荐我写的另一个库，轻松实现在应用内点击小图查看大图的动画放大效果
 

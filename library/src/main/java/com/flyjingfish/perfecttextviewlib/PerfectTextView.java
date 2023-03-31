@@ -1053,7 +1053,7 @@ public class PerfectTextView extends AppCompatTextView {
      * 设置文本区域的背景
      * @param textBackgroundRes 图片资源id
      */
-    public void setTextBackgroundResourse(@DrawableRes int textBackgroundRes) {
+    public void setTextBackgroundResource(@DrawableRes int textBackgroundRes) {
         this.setTextBackground(getResources().getDrawable(textBackgroundRes));
     }
 
