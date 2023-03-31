@@ -88,7 +88,7 @@
 | perfect_text_background        | reference/color |                                        文本区域背景                                        |
 | perfect_text_background_scope  |      enum       | wrappedText(紧紧包裹文本)/fitDrawablePadding(适应到四个方向的Drawable并与drawable距离为drawablePadding) |
 
-### 设置监听
+### 设置监听(部分示例)
 
 ```java
 //点击左侧图标监听
@@ -110,13 +110,16 @@ binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
 
 ### 更多功能
 
-
-| attr                      | description |
-|---------------------------|:-----------:|
-| setTextBackground         |   文本区域背景    |
-| setTextBackgroundResource |   文本区域背景    |
-| ssetTextBackgroundColor   |   文本区域背景    |
-| setTextBackgroundScope    | 文本区域背景显示区域  |
+| attr                                              |                description                 |
+|---------------------------------------------------|:------------------------------------------:|
+| setTextBackground                                 |                   文本区域背景                   |
+| setTextBackgroundResource                         |                   文本区域背景                   |
+| setTextBackgroundColor                            |                   文本区域背景                   |
+| setTextBackgroundScope                            |                 文本区域背景显示区域                 |
+| setDrawableStartSelected/setDrawableEndSelected等等 |                    图片选中                    |
+| setDefaultText                                    |                    默认文本                    |
+| setSelectedText                                   |                    选中文本                    |
+| setText                                           | 这是TextView默认的方法，一般不要调用它，如果调用它则会更新当前选中状态的文本 |
 
 # 最后推荐我写的另一个库，轻松实现在应用内点击小图查看大图的动画放大效果
 
