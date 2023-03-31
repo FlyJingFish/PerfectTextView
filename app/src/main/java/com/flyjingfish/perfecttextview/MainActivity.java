@@ -1,10 +1,10 @@
 package com.flyjingfish.perfecttextview;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableLeftClickListener(v -> {
             Toast.makeText(this,"setOnDrawableLeftClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableLeftClickListener");
+//            binding.hollowTextView.setDrawableLeftSelected(true);
         });
         binding.hollowTextView.setOnDrawableTopClickListener(v -> {
             Toast.makeText(this,"setOnDrawableTopClickListener",Toast.LENGTH_SHORT).show();
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableRightClickListener(v -> {
             Toast.makeText(this,"setOnDrawableRightClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableRightClickListener");
+//            binding.hollowTextView.setDrawableRightSelected(true);
         });
         binding.hollowTextView.setOnDrawableBottomClickListener(v -> {
             Toast.makeText(this,"setOnDrawableBottomClickListener",Toast.LENGTH_SHORT).show();
@@ -52,10 +54,13 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableStartClickListener(v -> {
             Toast.makeText(this,"setOnDrawableStartClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableStartClickListener");
+            binding.hollowTextView.setDrawableStartSelected(true);
+
         });
         binding.hollowTextView.setOnDrawableEndClickListener(v -> {
             Toast.makeText(this,"setOnDrawableEndClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableEndClickListener");
+            binding.hollowTextView.setDrawableEndSelected(true);
         });
 
 
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableLeftLongClickListener(v -> {
             Toast.makeText(this,"setOnDrawableLeftLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableLeftLongClickListener");
+
             return false;
         });
         binding.hollowTextView.setOnDrawableTopLongClickListener(v -> {
@@ -96,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableLeftDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableLeftDoubleClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableLeftDoubleClickListener");
+//            binding.hollowTextView.setDrawableLeftSelected(false);
         });
         binding.hollowTextView.setOnDrawableTopDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableTopDoubleClickListener",Toast.LENGTH_SHORT).show();
@@ -104,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableRightDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableRightDoubleClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableRightDoubleClickListener");
+//            binding.hollowTextView.setDrawableRightSelected(false);
         });
         binding.hollowTextView.setOnDrawableBottomDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableBottomDoubleClickListener",Toast.LENGTH_SHORT).show();
@@ -112,19 +120,30 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableStartDoubleClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableStartDoubleClickListener");
+            binding.hollowTextView.setDrawableStartSelected(false);
         });
         binding.hollowTextView.setOnDrawableEndDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableEndDoubleClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableEndDoubleClickListener");
+            binding.hollowTextView.setDrawableEndSelected(false);
         });
 
 
         binding.button1.setOnClickListener(v -> {
             binding.hollowTextView.setDrawableStartWidthHeight(100,100);
+            binding.hollowTextView.setSelected(true);
+            binding.hollowTextView3.setSelected(true);
         });
         binding.button2.setOnClickListener(v -> {
 //            binding.hollowTextView.setDrawableStartPadding(100);
             binding.hollowTextView.setCompoundDrawablePadding(100);
+        });
+
+        binding.hollowTextView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
         });
     }
 

@@ -84,10 +84,18 @@ public class PerfectTextView extends AppCompatTextView {
 
         initCompoundDrawables();
 
-        super.setOnClickListener(new OnClickListener() {
+        super.setOnTouchListener(new OnTouchListener() {
             @Override
-            public void onClick(View v) {
-
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    setPressed(false, event, DrawableState.Pressed);
+                    setPressed(false);
+                }
+                if (onTouchListener != null) {
+                    onTouchListener.onTouch(v, event);
+                }
+                return true;
             }
         });
     }
@@ -500,13 +508,23 @@ public class PerfectTextView extends AppCompatTextView {
             return super.onSingleTapConfirmed(e);
         }
 
+        @Override
+        public void onShowPress(MotionEvent e) {
+            super.onShowPress(e);
+
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            setPressed(true, e, DrawableState.Pressed);
+            return super.onDown(e);
+        }
+
         private void clickEvent(MotionEvent e, ClickType clickType) {
             Drawable[] drawablesRelative = getCompoundDrawablesRelative();
             Drawable[] drawables = getCompoundDrawables();
-//
-//            Drawable drawableLeft = drawables[0];
+
             Drawable drawableTop = drawables[1];
-//            Drawable drawableRight = drawables[2];
             Drawable drawableBottom = drawables[3];
 
             Drawable drawableLeft = drawables[0];
@@ -514,15 +532,10 @@ public class PerfectTextView extends AppCompatTextView {
             boolean isClick = false;
             if (drawableLeft != null) {
                 int left = getPaddingLeft();
-                int topOffset = 0;
-                if (drawableRight != null) {
-                    if (drawableRight.getBounds().height() > drawableLeft.getBounds().height()) {
-                        topOffset = Math.abs(drawableRight.getBounds().height() - drawableLeft.getBounds().height()) / 2;
-                    }
-                }
-                int top = getCompoundPaddingTop() + topOffset;
                 int right = left + drawableLeft.getBounds().width();
-                int bottom = top + drawableLeft.getBounds().height();
+                int iconMiddleY = (getHeight() - getCompoundPaddingTop() - getCompoundPaddingBottom()) / 2 + getCompoundPaddingTop();
+                int top = iconMiddleY - drawableLeft.getBounds().height() / 2;
+                int bottom = iconMiddleY + drawableLeft.getBounds().height() / 2;
                 if (e.getX() >= left && e.getX() <= right &&
                         e.getY() >= top && e.getY() <= bottom) {
                     if (clickType == ClickType.Click) {
@@ -570,15 +583,11 @@ public class PerfectTextView extends AppCompatTextView {
                 }
             }
             if (drawableTop != null) {
-                int leftOffset = 0;
-                if (drawableBottom != null) {
-                    if (drawableBottom.getBounds().height() > drawableTop.getBounds().height()) {
-                        leftOffset = Math.abs(drawableBottom.getBounds().height() - drawableTop.getBounds().height()) / 2;
-                    }
-                }
-                int left = getCompoundPaddingLeft() + leftOffset;
+                int iconMiddleX = (getWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight()) / 2 + getCompoundPaddingLeft();
+                int left = iconMiddleX - drawableTop.getBounds().width() / 2;
+                int right = iconMiddleX + drawableTop.getBounds().width() / 2;
+
                 int top = getPaddingTop();
-                int right = left + drawableTop.getBounds().width();
                 int bottom = top + drawableTop.getBounds().height();
                 if (e.getX() >= left && e.getX() <= right &&
                         e.getY() >= top && e.getY() <= bottom) {
@@ -595,14 +604,9 @@ public class PerfectTextView extends AppCompatTextView {
             if (drawableRight != null) {
                 int right = getWidth() - getPaddingRight();
                 int left = right - drawableRight.getBounds().width();
-                int topOffset = 0;
-                if (drawableLeft != null) {
-                    if (drawableLeft.getBounds().height() > drawableRight.getBounds().height()) {
-                        topOffset = Math.abs(drawableRight.getBounds().height() - drawableLeft.getBounds().height()) / 2;
-                    }
-                }
-                int top = getCompoundPaddingTop() + topOffset;
-                int bottom = top + drawableRight.getBounds().height();
+                int iconMiddleY = (getHeight() - getCompoundPaddingTop() - getCompoundPaddingBottom()) / 2 + getCompoundPaddingTop();
+                int top = iconMiddleY - drawableRight.getBounds().height() / 2;
+                int bottom = iconMiddleY + drawableRight.getBounds().height() / 2;
                 if (e.getX() >= left && e.getX() <= right &&
                         e.getY() >= top && e.getY() <= bottom) {
                     if (clickType == ClickType.Click) {
@@ -653,14 +657,9 @@ public class PerfectTextView extends AppCompatTextView {
             if (drawableBottom != null) {
                 int bottom = getHeight() - getPaddingBottom();
                 int top = bottom - drawableBottom.getBounds().height();
-                int leftOffset = 0;
-                if (drawableTop != null) {
-                    if (drawableTop.getBounds().height() > drawableBottom.getBounds().height()) {
-                        leftOffset = Math.abs(drawableTop.getBounds().height() - drawableBottom.getBounds().height()) / 2;
-                    }
-                }
-                int left = getCompoundPaddingLeft() + leftOffset;
-                int right = left + drawableBottom.getBounds().width();
+                int iconMiddleX = (getWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight()) / 2 + getCompoundPaddingLeft();
+                int left = iconMiddleX - drawableBottom.getBounds().width() / 2;
+                int right = iconMiddleX + drawableBottom.getBounds().width() / 2;
                 if (e.getX() >= left && e.getX() <= right &&
                         e.getY() >= top && e.getY() <= bottom) {
                     if (clickType == ClickType.Click && onDrawableBottomClickListener != null) {
@@ -674,7 +673,7 @@ public class PerfectTextView extends AppCompatTextView {
                 }
             }
 
-            if (!isClick){
+            if (!isClick) {
                 if (clickType == ClickType.Click && onClickListener != null) {
                     onClickListener.onClick(PerfectTextView.this);
                 } else if (clickType == ClickType.LongClick && onLongClickListener != null) {
@@ -690,13 +689,262 @@ public class PerfectTextView extends AppCompatTextView {
     private enum ClickType {
         Click,
         DoubleClick,
-        LongClick;
+        LongClick
+    }
+
+    private enum DrawableState {
+        Pressed, Selected
+    }
+
+    private void setPressed(boolean pressed, MotionEvent e, DrawableState state) {
+        Drawable[] drawablesRelative = getCompoundDrawablesRelative();
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableTop = drawables[1];
+        Drawable drawableBottom = drawables[3];
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableRight = drawables[2];
+        boolean isClick = false;
+        if (drawableLeft != null) {
+            int left = getPaddingLeft();
+            int right = left + drawableLeft.getBounds().width();
+            int iconMiddleY = (getHeight() - getCompoundPaddingTop() - getCompoundPaddingBottom()) / 2 + getCompoundPaddingTop();
+            int top = iconMiddleY - drawableLeft.getBounds().height() / 2;
+            int bottom = iconMiddleY + drawableLeft.getBounds().height() / 2;
+            if (e.getX() >= left && e.getX() <= right &&
+                    e.getY() >= top && e.getY() <= bottom) {
+                if (state == DrawableState.Pressed) {
+                    if (drawablesRelative[0] == drawableLeft) {
+                        if (onDrawableStartClickListener != null || onDrawableLeftClickListener != null) {
+                            setPressed(drawableLeft, pressed);
+                        }
+                    } else {
+                        if (onDrawableEndClickListener != null || onDrawableLeftClickListener != null) {
+                            setPressed(drawableLeft, pressed);
+                        }
+                    }
+                }
+
+                isClick = true;
+            }
+        }
+        if (drawableTop != null) {
+            int iconMiddleX = (getWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight()) / 2 + getCompoundPaddingLeft();
+            int left = iconMiddleX - drawableTop.getBounds().width() / 2;
+            int right = iconMiddleX + drawableTop.getBounds().width() / 2;
+
+            int top = getPaddingTop();
+            int bottom = top + drawableTop.getBounds().height();
+            if (e.getX() >= left && e.getX() <= right &&
+                    e.getY() >= top && e.getY() <= bottom) {
+                if (state == DrawableState.Pressed && onDrawableTopClickListener != null) {
+                    setPressed(drawableTop, pressed);
+                }
+                isClick = true;
+            }
+        }
+        if (drawableRight != null) {
+            int right = getWidth() - getPaddingRight();
+            int left = right - drawableRight.getBounds().width();
+            int iconMiddleY = (getHeight() - getCompoundPaddingTop() - getCompoundPaddingBottom()) / 2 + getCompoundPaddingTop();
+            int top = iconMiddleY - drawableRight.getBounds().height() / 2;
+            int bottom = iconMiddleY + drawableRight.getBounds().height() / 2;
+            if (e.getX() >= left && e.getX() <= right &&
+                    e.getY() >= top && e.getY() <= bottom) {
+                if (state == DrawableState.Pressed) {
+                    if (drawablesRelative[2] == drawableRight) {
+                        if (onDrawableEndClickListener != null || onDrawableRightClickListener != null) {
+                            setPressed(drawableRight, pressed);
+                        }
+                    } else {
+                        if (onDrawableStartClickListener != null || onDrawableRightClickListener != null) {
+                            setPressed(drawableRight, pressed);
+                        }
+                    }
+                }
+
+                isClick = true;
+            }
+        }
+
+        if (drawableBottom != null) {
+            int bottom = getHeight() - getPaddingBottom();
+            int top = bottom - drawableBottom.getBounds().height();
+            int iconMiddleX = (getWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight()) / 2 + getCompoundPaddingLeft();
+            int left = iconMiddleX - drawableBottom.getBounds().width() / 2;
+            int right = iconMiddleX + drawableBottom.getBounds().width() / 2;
+            if (e.getX() >= left && e.getX() <= right &&
+                    e.getY() >= top && e.getY() <= bottom) {
+                if (state == DrawableState.Pressed && onDrawableBottomClickListener != null) {
+                    setPressed(drawableBottom, pressed);
+                }
+                isClick = true;
+            }
+        }
+
+        if (!pressed) {
+            setPressed(drawableLeft, false);
+            setPressed(drawableTop, false);
+            setPressed(drawableRight, false);
+            setPressed(drawableBottom, false);
+        }
+        if (!isClick) {
+            if (state == DrawableState.Pressed && onClickListener != null) {
+                setPressed(true);
+            }
+        }
+
+    }
+
+    private void setPressed(Drawable drawable, boolean pressed) {
+        if (drawable != null && drawable.isStateful()) {
+            drawable.setState(pressed ? new int[]{android.R.attr.state_focused, android.R.attr.state_pressed} : new int[]{});
+        }
+    }
+
+    private void setSelected(Drawable drawable, boolean selected) {
+        if (drawable != null && drawable.isStateful()) {
+//            int[] oldState= drawable.getState();
+//            boolean select = drawable.getState() != null && drawable.getState().length>0;
+//
+//            Log.e("isStateful","=="+drawable.isStateful()+"="+oldState);
+////            if (select != selected && selected){
+////            }
+            drawable.setState(selected ? new int[]{android.R.attr.state_focused, android.R.attr.state_selected} : new int[]{});
+//            int[] newState= drawable.getState();
+//            Log.e("isStateful","=="+drawable.isStateful()+"="+newState);
+        }
+    }
+
+//    public void setPressed(boolean pressed) {
+//        final boolean needsRefresh = pressed != ((mPrivateFlags & PFLAG_PRESSED) == PFLAG_PRESSED);
+//
+//        if (pressed) {
+//            mPrivateFlags |= PFLAG_PRESSED;
+//        } else {
+//            mPrivateFlags &= ~PFLAG_PRESSED;
+//        }
+//
+//        if (needsRefresh) {
+//            refreshDrawableState();
+//        }
+//    }
+//    public void refreshDrawableState() {
+//        mPrivateFlags |= PFLAG_DRAWABLE_STATE_DIRTY;
+//        drawableStateChanged();
+//
+//        ViewParent parent = mParent;
+//        if (parent != null) {
+//            parent.childDrawableStateChanged(this);
+//        }
+//    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableTop = drawables[1];
+        Drawable drawableBottom = drawables[3];
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableRight = drawables[2];
+        setPressed(drawableLeft, false);
+        setPressed(drawableTop, false);
+        setPressed(drawableRight, false);
+        setPressed(drawableBottom, false);
+//        setSelected(drawableLeft, selectedLeft);
+//        setSelected(drawableRight, selectedRight);
+//        setSelected(drawableTop, selectedTop);
+//        setSelected(drawableBottom, selectedBottom);
+    }
+
+    //    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        gestureDetector.onTouchEvent(event);
+//        return super.onTouchEvent(event);
+//    }
+
+    OnTouchListener onTouchListener;
+
+    @Override
+    public void setOnTouchListener(OnTouchListener l) {
+        onTouchListener = l;
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        gestureDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
+    public void setSelected(boolean selected) {
+        super.setSelected(selected);
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableTop = drawables[1];
+        Drawable drawableBottom = drawables[3];
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableRight = drawables[2];
+        setSelected(drawableLeft, false);
+        setSelected(drawableTop, false);
+        setSelected(drawableRight, false);
+        setSelected(drawableBottom, false);
     }
 
+    public void setDrawableStartSelected(boolean selected) {
+        if (isRtl){
+            setDrawableRightSelected(selected);
+        }else {
+            setDrawableLeftSelected(selected);
+        }
+    }
+
+    public void setDrawableEndSelected(boolean selected) {
+        if (isRtl){
+            setDrawableLeftSelected(selected);
+        }else {
+            setDrawableRightSelected(selected);
+        }
+    }
+    private boolean selectedLeft;
+    private boolean selectedRight;
+    private boolean selectedTop;
+    private boolean selectedBottom;
+    public void setDrawableLeftSelected(boolean selected) {
+        Drawable[] drawables = getCompoundDrawables();
+        Drawable drawableLeft = drawables[0];
+        if (selectedLeft != selected){
+            setSelected(drawableLeft, selected);
+        }
+        selectedLeft = selected;
+    }
+
+    public void setDrawableRightSelected(boolean selected) {
+        Drawable[] drawables = getCompoundDrawables();
+        Drawable drawableRight = drawables[2];
+        setSelected(drawableRight, selected);
+    }
+
+    public void setDrawableTopSelected(boolean selected) {
+        Drawable[] drawables = getCompoundDrawables();
+        Drawable drawableTop = drawables[1];
+        setSelected(drawableTop, selected);
+    }
+
+    public void setDrawableBottomSelected(boolean selected) {
+        Drawable[] drawables = getCompoundDrawables();
+        Drawable drawableBottom = drawables[3];
+        setSelected(drawableBottom, selected);
+    }
+
+    private int mPrivateFlags;
+    private final int LEFT_PRESSED = 1001;
+    private final int RIGHT_PRESSED = 1002;
+    private final int TOP_PRESSED = 1003;
+    private final int BOTTOM_PRESSED = 1004;
+    private final int LEFT_SELECTED = 1001;
+    private final int RIGHT_SELECTED = 1002;
+    private final int TOP_SELECTED = 1003;
+    private final int BOTTOM_SELECTED = 1004;
+    public boolean isPressed(int flag) {
+        return (mPrivateFlags & flag) == flag;
+    }
 }
