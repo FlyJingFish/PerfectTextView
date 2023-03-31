@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableLeftClickListener(v -> {
             Toast.makeText(this,"setOnDrawableLeftClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableLeftClickListener");
-//            binding.hollowTextView.setDrawableLeftSelected(true);
+            binding.hollowTextView.setDrawableLeftSelected(true);
         });
         binding.hollowTextView.setOnDrawableTopClickListener(v -> {
             Toast.makeText(this,"setOnDrawableTopClickListener",Toast.LENGTH_SHORT).show();
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableRightClickListener(v -> {
             Toast.makeText(this,"setOnDrawableRightClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableRightClickListener");
-//            binding.hollowTextView.setDrawableRightSelected(true);
+            binding.hollowTextView.setDrawableRightSelected(true);
         });
         binding.hollowTextView.setOnDrawableBottomClickListener(v -> {
             Toast.makeText(this,"setOnDrawableBottomClickListener",Toast.LENGTH_SHORT).show();
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableLeftDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableLeftDoubleClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableLeftDoubleClickListener");
-//            binding.hollowTextView.setDrawableLeftSelected(false);
+            binding.hollowTextView.setDrawableLeftSelected(false);
         });
         binding.hollowTextView.setOnDrawableTopDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableTopDoubleClickListener",Toast.LENGTH_SHORT).show();
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnDrawableRightDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableRightDoubleClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableRightDoubleClickListener");
-//            binding.hollowTextView.setDrawableRightSelected(false);
+            binding.hollowTextView.setDrawableRightSelected(false);
         });
         binding.hollowTextView.setOnDrawableBottomDoubleClickListener(v -> {
             Toast.makeText(this,"setOnDrawableBottomDoubleClickListener",Toast.LENGTH_SHORT).show();

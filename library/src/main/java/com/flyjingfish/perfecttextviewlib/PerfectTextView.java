@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.text.TextUtilsCompat;
 
+import java.util.HashSet;
 import java.util.Locale;
 
 public class PerfectTextView extends AppCompatTextView {
@@ -799,46 +800,58 @@ public class PerfectTextView extends AppCompatTextView {
 
     private void setPressed(Drawable drawable, boolean pressed) {
         if (drawable != null && drawable.isStateful()) {
-            drawable.setState(pressed ? new int[]{android.R.attr.state_focused, android.R.attr.state_pressed} : new int[]{});
+            int[] oldState= drawable.getState();
+            int[] newState;
+            if (oldState != null){
+                HashSet<Integer> set = new HashSet<>();
+                for (int i : oldState) {
+                    set.add(i);
+                }
+                if (pressed){
+                    set.add(android.R.attr.state_pressed);
+                }else {
+                    set.remove(android.R.attr.state_pressed);
+                }
+                newState = new int[set.size()];
+                int index = 0;
+                for (int i : set) {
+                    newState[index] = i;
+                    index ++;
+                }
+            }else {
+                newState = pressed ? new int[]{android.R.attr.state_pressed} : new int[]{};
+            }
+
+            drawable.setState(newState);
         }
     }
 
     private void setSelected(Drawable drawable, boolean selected) {
-        if (drawable != null && drawable.isStateful()) {
-//            int[] oldState= drawable.getState();
-//            boolean select = drawable.getState() != null && drawable.getState().length>0;
-//
-//            Log.e("isStateful","=="+drawable.isStateful()+"="+oldState);
-////            if (select != selected && selected){
-////            }
-            drawable.setState(selected ? new int[]{android.R.attr.state_focused, android.R.attr.state_selected} : new int[]{});
-//            int[] newState= drawable.getState();
-//            Log.e("isStateful","=="+drawable.isStateful()+"="+newState);
+        if (drawable != null) {
+            int[] oldState= drawable.getState();
+            int[] newState;
+            if (oldState != null){
+                HashSet<Integer> set = new HashSet<>();
+                for (int i : oldState) {
+                    set.add(i);
+                }
+                if (selected){
+                    set.add(android.R.attr.state_selected);
+                }else {
+                    set.remove(android.R.attr.state_selected);
+                }
+                newState = new int[set.size()];
+                int index = 0;
+                for (int i : set) {
+                    newState[index] = i;
+                    index ++;
+                }
+            }else {
+                newState = selected ? new int[]{android.R.attr.state_selected} : new int[]{};
+            }
+            drawable.setState(newState);
         }
     }
-
-//    public void setPressed(boolean pressed) {
-//        final boolean needsRefresh = pressed != ((mPrivateFlags & PFLAG_PRESSED) == PFLAG_PRESSED);
-//
-//        if (pressed) {
-//            mPrivateFlags |= PFLAG_PRESSED;
-//        } else {
-//            mPrivateFlags &= ~PFLAG_PRESSED;
-//        }
-//
-//        if (needsRefresh) {
-//            refreshDrawableState();
-//        }
-//    }
-//    public void refreshDrawableState() {
-//        mPrivateFlags |= PFLAG_DRAWABLE_STATE_DIRTY;
-//        drawableStateChanged();
-//
-//        ViewParent parent = mParent;
-//        if (parent != null) {
-//            parent.childDrawableStateChanged(this);
-//        }
-//    }
 
     @Override
     protected void drawableStateChanged() {
@@ -854,17 +867,8 @@ public class PerfectTextView extends AppCompatTextView {
         setPressed(drawableTop, false);
         setPressed(drawableRight, false);
         setPressed(drawableBottom, false);
-//        setSelected(drawableLeft, selectedLeft);
-//        setSelected(drawableRight, selectedRight);
-//        setSelected(drawableTop, selectedTop);
-//        setSelected(drawableBottom, selectedBottom);
     }
 
-    //    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        gestureDetector.onTouchEvent(event);
-//        return super.onTouchEvent(event);
-//    }
 
     OnTouchListener onTouchListener;
 
@@ -876,75 +880,81 @@ public class PerfectTextView extends AppCompatTextView {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
-        Drawable[] drawables = getCompoundDrawables();
-
-        Drawable drawableTop = drawables[1];
-        Drawable drawableBottom = drawables[3];
-
-        Drawable drawableLeft = drawables[0];
-        Drawable drawableRight = drawables[2];
-        setSelected(drawableLeft, false);
-        setSelected(drawableTop, false);
-        setSelected(drawableRight, false);
-        setSelected(drawableBottom, false);
+        initCompoundDrawables();
+        setDrawableLeftSelected(false);
+        setDrawableTopSelected(false);
+        setDrawableRightSelected(false);
+        setDrawableBottomSelected(false);
     }
 
+    private boolean isDrawableLeftSelected;
+    private boolean isDrawableTopSelected;
+    private boolean isDrawableRightSelected;
+    private boolean isDrawableBottomSelected;
+
     public void setDrawableStartSelected(boolean selected) {
-        if (isRtl){
+        if (isRtl) {
             setDrawableRightSelected(selected);
-        }else {
+        } else {
             setDrawableLeftSelected(selected);
         }
     }
 
     public void setDrawableEndSelected(boolean selected) {
-        if (isRtl){
+        if (isRtl) {
             setDrawableLeftSelected(selected);
-        }else {
+        } else {
             setDrawableRightSelected(selected);
         }
     }
-    private boolean selectedLeft;
-    private boolean selectedRight;
-    private boolean selectedTop;
-    private boolean selectedBottom;
+
     public void setDrawableLeftSelected(boolean selected) {
         Drawable[] drawables = getCompoundDrawables();
         Drawable drawableLeft = drawables[0];
-        if (selectedLeft != selected){
-            setSelected(drawableLeft, selected);
-        }
-        selectedLeft = selected;
+        setSelected(drawableLeft, selected);
+        isDrawableLeftSelected = selected;
     }
 
     public void setDrawableRightSelected(boolean selected) {
         Drawable[] drawables = getCompoundDrawables();
         Drawable drawableRight = drawables[2];
         setSelected(drawableRight, selected);
+        isDrawableRightSelected = selected;
     }
 
     public void setDrawableTopSelected(boolean selected) {
         Drawable[] drawables = getCompoundDrawables();
         Drawable drawableTop = drawables[1];
         setSelected(drawableTop, selected);
+        isDrawableTopSelected = selected;
     }
 
     public void setDrawableBottomSelected(boolean selected) {
         Drawable[] drawables = getCompoundDrawables();
         Drawable drawableBottom = drawables[3];
         setSelected(drawableBottom, selected);
+        isDrawableBottomSelected = selected;
+    }
+    public boolean isDrawableStartSelected() {
+        return isRtl ?isDrawableRightSelected:isDrawableLeftSelected;
     }
 
-    private int mPrivateFlags;
-    private final int LEFT_PRESSED = 1001;
-    private final int RIGHT_PRESSED = 1002;
-    private final int TOP_PRESSED = 1003;
-    private final int BOTTOM_PRESSED = 1004;
-    private final int LEFT_SELECTED = 1001;
-    private final int RIGHT_SELECTED = 1002;
-    private final int TOP_SELECTED = 1003;
-    private final int BOTTOM_SELECTED = 1004;
-    public boolean isPressed(int flag) {
-        return (mPrivateFlags & flag) == flag;
+    public boolean isDrawableEndSelected() {
+        return isRtl ?isDrawableLeftSelected:isDrawableRightSelected;
+    }
+    public boolean isDrawableLeftSelected() {
+        return isDrawableLeftSelected;
+    }
+
+    public boolean isDrawableTopSelected() {
+        return isDrawableTopSelected;
+    }
+
+    public boolean isDrawableRightSelected() {
+        return isDrawableRightSelected;
+    }
+
+    public boolean isDrawableBottomSelected() {
+        return isDrawableBottomSelected;
     }
 }
