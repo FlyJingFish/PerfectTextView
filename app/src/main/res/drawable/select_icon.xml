@@ -2,6 +2,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@mipmap/no_select" android:state_selected="false"/>
     <item android:drawable="@mipmap/select" android:state_selected="true" />
-    <item android:drawable="@mipmap/no_select" android:state_pressed="false"/>
-    <item android:drawable="@mipmap/select" android:state_pressed="true" />
 </selector>

@@ -2,13 +2,20 @@ package com.flyjingfish.perfecttextviewlib;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.Layout;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.LayoutDirection;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -39,6 +46,17 @@ public class PerfectTextView extends AppCompatTextView {
     private int drawableRightPadding;
     private final boolean isInitSuper;
     private boolean isRtl;
+    private CharSequence selectedText;
+    private CharSequence defaultText;
+    private Drawable textBackground;
+    private TextBackgroundScope textBackgroundScope;
+    private OnClickScope onClickScope = OnClickScope.allScope;
+    public enum TextBackgroundScope{
+        wrappedText, fitDrawablePadding;
+    }
+    public enum OnClickScope{
+        textScope,allScope;
+    }
 
     public PerfectTextView(@NonNull Context context) {
         this(context, null);
@@ -81,6 +99,19 @@ public class PerfectTextView extends AppCompatTextView {
         drawableRightHeight = typedArray.getDimensionPixelOffset(R.styleable.PerfectTextView_perfect_drawableRight_height, 0);
         drawableRightPadding = typedArray.getDimensionPixelOffset(R.styleable.PerfectTextView_perfect_drawableRight_padding, pad);
 
+        selectedText = typedArray.getText(R.styleable.PerfectTextView_perfect_selected_text);
+        defaultText = typedArray.getText(R.styleable.PerfectTextView_perfect_default_text);
+        textBackground = typedArray.getDrawable(R.styleable.PerfectTextView_perfect_text_background);
+        int textBackgroundScopeInt = typedArray.getInt(R.styleable.PerfectTextView_perfect_text_background_scope,0);
+        textBackgroundScope = TextBackgroundScope.values()[textBackgroundScopeInt];
+
+        CharSequence text = getText();
+        if (TextUtils.isEmpty(defaultText)){
+            defaultText = text;
+        }else {
+            setText(defaultText);
+        }
+
         typedArray.recycle();
 
         initCompoundDrawables();
@@ -90,7 +121,7 @@ public class PerfectTextView extends AppCompatTextView {
             public boolean onTouch(View v, MotionEvent event) {
                 gestureDetector.onTouchEvent(event);
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    setPressed(false, event, DrawableState.Pressed);
+                    setPressed(false, event);
                     setPressed(false);
                 }
                 if (onTouchListener != null) {
@@ -113,17 +144,12 @@ public class PerfectTextView extends AppCompatTextView {
         Drawable drawableStart = drawablesRelative[0];
         Drawable drawableEnd = drawablesRelative[2];
 
-
-        switch (isRtl ? LAYOUT_DIRECTION_RTL : LAYOUT_DIRECTION_LTR) {
-            default:
-            case LAYOUT_DIRECTION_LTR:
-                setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableLeft, drawableTop,
-                        drawableEnd != null ? drawableEnd : drawableRight, drawableBottom);
-                break;
-            case LAYOUT_DIRECTION_RTL:
-                setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableRight, drawableTop,
-                        drawableEnd != null ? drawableEnd : drawableLeft, drawableBottom);
-                break;
+        if (isRtl){
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableRight, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableLeft, drawableBottom);
+        }else {
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableLeft, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableRight, drawableBottom);
         }
 
     }
@@ -143,16 +169,12 @@ public class PerfectTextView extends AppCompatTextView {
         paddings[1] = drawableTopPadding;
         paddings[2] = drawableRightPadding;
         paddings[3] = drawableBottomPadding;
-        switch (isRtl ? LAYOUT_DIRECTION_RTL : LAYOUT_DIRECTION_LTR) {
-            default:
-            case LAYOUT_DIRECTION_LTR:
-                paddings[0] = drawableStartPadding != 0 ? drawableStartPadding : paddings[0];
-                paddings[2] = drawableEndPadding != 0 ? drawableEndPadding : paddings[2];
-                break;
-            case LAYOUT_DIRECTION_RTL:
-                paddings[0] = drawableEndPadding != 0 ? drawableEndPadding : paddings[0];
-                paddings[2] = drawableStartPadding != 0 ? drawableStartPadding : paddings[2];
-                break;
+        if (isRtl){
+            paddings[0] = drawableEndPadding != 0 ? drawableEndPadding : paddings[0];
+            paddings[2] = drawableStartPadding != 0 ? drawableStartPadding : paddings[2];
+        }else {
+            paddings[0] = drawableStartPadding != 0 ? drawableStartPadding : paddings[0];
+            paddings[2] = drawableEndPadding != 0 ? drawableEndPadding : paddings[2];
         }
         return paddings;
     }
@@ -171,17 +193,12 @@ public class PerfectTextView extends AppCompatTextView {
 //        setDrawableWidthHeight(right, drawableRightWidth, drawableRightHeight);
         setDrawableWidthHeight(top, drawableTopWidth, drawableTopHeight);
         setDrawableWidthHeight(bottom, drawableBottomWidth, drawableBottomHeight);
-
-        switch (isRtl ? LAYOUT_DIRECTION_RTL : LAYOUT_DIRECTION_LTR) {
-            default:
-            case LAYOUT_DIRECTION_LTR:
-                setDrawableWidthHeight(left, drawableStartWidth != 0 ? drawableStartWidth : drawableLeftWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableLeftHeight);
-                setDrawableWidthHeight(right, drawableEndWidth != 0 ? drawableEndWidth : drawableRightWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableRightHeight);
-                break;
-            case LAYOUT_DIRECTION_RTL:
-                setDrawableWidthHeight(left, drawableEndWidth != 0 ? drawableEndWidth : drawableLeftWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableLeftHeight);
-                setDrawableWidthHeight(right, drawableStartWidth != 0 ? drawableStartWidth : drawableRightWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableRightWidth);
-                break;
+        if (isRtl){
+            setDrawableWidthHeight(left, drawableEndWidth != 0 ? drawableEndWidth : drawableLeftWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableLeftHeight);
+            setDrawableWidthHeight(right, drawableStartWidth != 0 ? drawableStartWidth : drawableRightWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableRightWidth);
+        }else {
+            setDrawableWidthHeight(left, drawableStartWidth != 0 ? drawableStartWidth : drawableLeftWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableLeftHeight);
+            setDrawableWidthHeight(right, drawableEndWidth != 0 ? drawableEndWidth : drawableRightWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableRightHeight);
         }
         super.setCompoundDrawables(left, top, right, bottom);
     }
@@ -192,16 +209,12 @@ public class PerfectTextView extends AppCompatTextView {
         setDrawableWidthHeight(bottom, drawableBottomWidth, drawableBottomHeight);
 //        setDrawableWidthHeight(start, drawableStartWidth !=0 ?drawableStartWidth:drawableLeftWidth, drawableStartHeight!=0?drawableStartHeight:drawableLeftHeight);
 //        setDrawableWidthHeight(end, drawableEndWidth, drawableEndHeight);
-        switch (isRtl ? LAYOUT_DIRECTION_RTL : LAYOUT_DIRECTION_LTR) {
-            default:
-            case LAYOUT_DIRECTION_LTR:
-                setDrawableWidthHeight(start, drawableStartWidth != 0 ? drawableStartWidth : drawableLeftWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableLeftHeight);
-                setDrawableWidthHeight(end, drawableEndWidth != 0 ? drawableEndWidth : drawableRightWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableRightHeight);
-                break;
-            case LAYOUT_DIRECTION_RTL:
-                setDrawableWidthHeight(start, drawableStartWidth != 0 ? drawableStartWidth : drawableRightWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableRightHeight);
-                setDrawableWidthHeight(end, drawableEndWidth != 0 ? drawableEndWidth : drawableLeftWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableLeftHeight);
-                break;
+        if (isRtl){
+            setDrawableWidthHeight(start, drawableStartWidth != 0 ? drawableStartWidth : drawableRightWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableRightHeight);
+            setDrawableWidthHeight(end, drawableEndWidth != 0 ? drawableEndWidth : drawableLeftWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableLeftHeight);
+        }else {
+            setDrawableWidthHeight(start, drawableStartWidth != 0 ? drawableStartWidth : drawableLeftWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableLeftHeight);
+            setDrawableWidthHeight(end, drawableEndWidth != 0 ? drawableEndWidth : drawableRightWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableRightHeight);
         }
         super.setCompoundDrawablesRelative(start, top, end, bottom);
     }
@@ -403,6 +416,8 @@ public class PerfectTextView extends AppCompatTextView {
     private OnClickListener onDrawableRightDoubleClickListener;
     private OnClickListener onDrawableBottomDoubleClickListener;
 
+    private OnTouchListener onTouchListener;
+
     public void setOnDrawableStartLongClickListener(OnLongClickListener l) {
         onDrawableStartLongClickListener = l;
     }
@@ -478,7 +493,12 @@ public class PerfectTextView extends AppCompatTextView {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
+        setOnClickListener(l,OnClickScope.allScope);
+    }
+
+    public void setOnClickListener(@Nullable OnClickListener l,OnClickScope onClickScope) {
         onClickListener = l;
+        this.onClickScope = onClickScope;
     }
 
     @Override
@@ -490,7 +510,7 @@ public class PerfectTextView extends AppCompatTextView {
         onDoubleClickListener = l;
     }
 
-    final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+    private final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
         @Override
         public void onLongPress(MotionEvent e) {
             super.onLongPress(e);
@@ -517,7 +537,7 @@ public class PerfectTextView extends AppCompatTextView {
 
         @Override
         public boolean onDown(MotionEvent e) {
-            setPressed(true, e, DrawableState.Pressed);
+            setPressed(true, e);
             return super.onDown(e);
         }
 
@@ -675,12 +695,20 @@ public class PerfectTextView extends AppCompatTextView {
             }
 
             if (!isClick) {
-                if (clickType == ClickType.Click && onClickListener != null) {
-                    onClickListener.onClick(PerfectTextView.this);
-                } else if (clickType == ClickType.LongClick && onLongClickListener != null) {
-                    onLongClickListener.onLongClick(PerfectTextView.this);
-                } else if (clickType == ClickType.DoubleClick && onDoubleClickListener != null) {
-                    onDoubleClickListener.onClick(PerfectTextView.this);
+                int left = getCompoundPaddingLeft();
+                int top = getCompoundPaddingTop();
+                int right = getWidth()-getCompoundPaddingRight();
+                int bottom = getHeight()-getCompoundPaddingBottom();
+                if (onClickScope == OnClickScope.allScope
+                        ||(onClickScope == OnClickScope.textScope && e.getX() >= left && e.getX() <= right &&
+                        e.getY() >= top && e.getY() <= bottom)){
+                    if (clickType == ClickType.Click && onClickListener != null) {
+                        onClickListener.onClick(PerfectTextView.this);
+                    } else if (clickType == ClickType.LongClick && onLongClickListener != null) {
+                        onLongClickListener.onLongClick(PerfectTextView.this);
+                    } else if (clickType == ClickType.DoubleClick && onDoubleClickListener != null) {
+                        onDoubleClickListener.onClick(PerfectTextView.this);
+                    }
                 }
             }
         }
@@ -693,11 +721,7 @@ public class PerfectTextView extends AppCompatTextView {
         LongClick
     }
 
-    private enum DrawableState {
-        Pressed, Selected
-    }
-
-    private void setPressed(boolean pressed, MotionEvent e, DrawableState state) {
+    private void setPressed(boolean pressed, MotionEvent e) {
         Drawable[] drawablesRelative = getCompoundDrawablesRelative();
         Drawable[] drawables = getCompoundDrawables();
 
@@ -715,15 +739,13 @@ public class PerfectTextView extends AppCompatTextView {
             int bottom = iconMiddleY + drawableLeft.getBounds().height() / 2;
             if (e.getX() >= left && e.getX() <= right &&
                     e.getY() >= top && e.getY() <= bottom) {
-                if (state == DrawableState.Pressed) {
-                    if (drawablesRelative[0] == drawableLeft) {
-                        if (onDrawableStartClickListener != null || onDrawableLeftClickListener != null) {
-                            setPressed(drawableLeft, pressed);
-                        }
-                    } else {
-                        if (onDrawableEndClickListener != null || onDrawableLeftClickListener != null) {
-                            setPressed(drawableLeft, pressed);
-                        }
+                if (drawablesRelative[0] == drawableLeft) {
+                    if (onDrawableStartClickListener != null || onDrawableLeftClickListener != null) {
+                        setPressed(drawableLeft, pressed);
+                    }
+                } else {
+                    if (onDrawableEndClickListener != null || onDrawableLeftClickListener != null) {
+                        setPressed(drawableLeft, pressed);
                     }
                 }
 
@@ -739,7 +761,7 @@ public class PerfectTextView extends AppCompatTextView {
             int bottom = top + drawableTop.getBounds().height();
             if (e.getX() >= left && e.getX() <= right &&
                     e.getY() >= top && e.getY() <= bottom) {
-                if (state == DrawableState.Pressed && onDrawableTopClickListener != null) {
+                if (onDrawableTopClickListener != null) {
                     setPressed(drawableTop, pressed);
                 }
                 isClick = true;
@@ -753,15 +775,13 @@ public class PerfectTextView extends AppCompatTextView {
             int bottom = iconMiddleY + drawableRight.getBounds().height() / 2;
             if (e.getX() >= left && e.getX() <= right &&
                     e.getY() >= top && e.getY() <= bottom) {
-                if (state == DrawableState.Pressed) {
-                    if (drawablesRelative[2] == drawableRight) {
-                        if (onDrawableEndClickListener != null || onDrawableRightClickListener != null) {
-                            setPressed(drawableRight, pressed);
-                        }
-                    } else {
-                        if (onDrawableStartClickListener != null || onDrawableRightClickListener != null) {
-                            setPressed(drawableRight, pressed);
-                        }
+                if (drawablesRelative[2] == drawableRight) {
+                    if (onDrawableEndClickListener != null || onDrawableRightClickListener != null) {
+                        setPressed(drawableRight, pressed);
+                    }
+                } else {
+                    if (onDrawableStartClickListener != null || onDrawableRightClickListener != null) {
+                        setPressed(drawableRight, pressed);
                     }
                 }
 
@@ -777,7 +797,7 @@ public class PerfectTextView extends AppCompatTextView {
             int right = iconMiddleX + drawableBottom.getBounds().width() / 2;
             if (e.getX() >= left && e.getX() <= right &&
                     e.getY() >= top && e.getY() <= bottom) {
-                if (state == DrawableState.Pressed && onDrawableBottomClickListener != null) {
+                if (onDrawableBottomClickListener != null) {
                     setPressed(drawableBottom, pressed);
                 }
                 isClick = true;
@@ -790,8 +810,15 @@ public class PerfectTextView extends AppCompatTextView {
             setPressed(drawableRight, false);
             setPressed(drawableBottom, false);
         }
-        if (!isClick) {
-            if (state == DrawableState.Pressed && onClickListener != null) {
+        int left = getCompoundPaddingLeft();
+        int top = getCompoundPaddingTop();
+        int right = getWidth()-getCompoundPaddingRight();
+        int bottom = getHeight()-getCompoundPaddingBottom();
+        if (!isClick && onClickListener != null) {
+            if (onClickScope == OnClickScope.textScope && e.getX() >= left && e.getX() <= right &&
+                    e.getY() >= top && e.getY() <= bottom){
+                setPressed(true);
+            }else if (onClickScope == OnClickScope.allScope){
                 setPressed(true);
             }
         }
@@ -800,25 +827,25 @@ public class PerfectTextView extends AppCompatTextView {
 
     private void setPressed(Drawable drawable, boolean pressed) {
         if (drawable != null && drawable.isStateful()) {
-            int[] oldState= drawable.getState();
+            int[] oldState = drawable.getState();
             int[] newState;
-            if (oldState != null){
+            if (oldState != null) {
                 HashSet<Integer> set = new HashSet<>();
                 for (int i : oldState) {
                     set.add(i);
                 }
-                if (pressed){
+                if (pressed) {
                     set.add(android.R.attr.state_pressed);
-                }else {
+                } else {
                     set.remove(android.R.attr.state_pressed);
                 }
                 newState = new int[set.size()];
                 int index = 0;
                 for (int i : set) {
                     newState[index] = i;
-                    index ++;
+                    index++;
                 }
-            }else {
+            } else {
                 newState = pressed ? new int[]{android.R.attr.state_pressed} : new int[]{};
             }
 
@@ -828,25 +855,25 @@ public class PerfectTextView extends AppCompatTextView {
 
     private void setSelected(Drawable drawable, boolean selected) {
         if (drawable != null) {
-            int[] oldState= drawable.getState();
+            int[] oldState = drawable.getState();
             int[] newState;
-            if (oldState != null){
+            if (oldState != null) {
                 HashSet<Integer> set = new HashSet<>();
                 for (int i : oldState) {
                     set.add(i);
                 }
-                if (selected){
+                if (selected) {
                     set.add(android.R.attr.state_selected);
-                }else {
+                } else {
                     set.remove(android.R.attr.state_selected);
                 }
                 newState = new int[set.size()];
                 int index = 0;
                 for (int i : set) {
                     newState[index] = i;
-                    index ++;
+                    index++;
                 }
-            }else {
+            } else {
                 newState = selected ? new int[]{android.R.attr.state_selected} : new int[]{};
             }
             drawable.setState(newState);
@@ -867,10 +894,13 @@ public class PerfectTextView extends AppCompatTextView {
         setPressed(drawableTop, false);
         setPressed(drawableRight, false);
         setPressed(drawableBottom, false);
+
+        setDrawableLeftSelected(isDrawableLeftSelected);
+        setDrawableTopSelected(isDrawableTopSelected);
+        setDrawableRightSelected(isDrawableRightSelected);
+        setDrawableBottomSelected(isDrawableBottomSelected);
     }
 
-
-    OnTouchListener onTouchListener;
 
     @Override
     public void setOnTouchListener(OnTouchListener l) {
@@ -880,11 +910,50 @@ public class PerfectTextView extends AppCompatTextView {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
-        initCompoundDrawables();
-        setDrawableLeftSelected(false);
-        setDrawableTopSelected(false);
-        setDrawableRightSelected(false);
-        setDrawableBottomSelected(false);
+        setDrawableLeftSelected(isDrawableLeftSelected);
+        setDrawableTopSelected(isDrawableTopSelected);
+        setDrawableRightSelected(isDrawableRightSelected);
+        setDrawableBottomSelected(isDrawableBottomSelected);
+        setText();
+        setSelected(textBackground,selected);
+    }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, type);
+        if (isSelected()){
+            selectedText = text;
+        }else {
+            defaultText = text;
+        }
+    }
+
+    private void setText(){
+        if (isSelected() && selectedText != null){
+            setText(selectedText);
+        }else {
+            setText(defaultText);
+        }
+    }
+
+    public void setSelectedText(CharSequence selectedText) {
+        this.selectedText = selectedText;
+        setText();
+    }
+
+    public void setDefaultText(CharSequence defaultText) {
+        this.defaultText = defaultText;
+        setText();
+    }
+
+    @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+        setDrawableLeftSelected(isDrawableLeftSelected);
+        setDrawableTopSelected(isDrawableTopSelected);
+        setDrawableRightSelected(isDrawableRightSelected);
+        setDrawableBottomSelected(isDrawableBottomSelected);
+        setPressed(textBackground, pressed);
     }
 
     private boolean isDrawableLeftSelected;
@@ -935,13 +1004,15 @@ public class PerfectTextView extends AppCompatTextView {
         setSelected(drawableBottom, selected);
         isDrawableBottomSelected = selected;
     }
+
     public boolean isDrawableStartSelected() {
-        return isRtl ?isDrawableRightSelected:isDrawableLeftSelected;
+        return isRtl ? isDrawableRightSelected : isDrawableLeftSelected;
     }
 
     public boolean isDrawableEndSelected() {
-        return isRtl ?isDrawableLeftSelected:isDrawableRightSelected;
+        return isRtl ? isDrawableLeftSelected : isDrawableRightSelected;
     }
+
     public boolean isDrawableLeftSelected() {
         return isDrawableLeftSelected;
     }
@@ -956,5 +1027,143 @@ public class PerfectTextView extends AppCompatTextView {
 
     public boolean isDrawableBottomSelected() {
         return isDrawableBottomSelected;
+    }
+
+    public Drawable getTextBackground() {
+        return textBackground;
+    }
+
+    /**
+     * 设置文本区域的背景
+     * @param textBackground 背景Drawable
+     */
+    public void setTextBackground(Drawable textBackground) {
+        this.textBackground = textBackground;
+        Rect result = new Rect();
+
+        result.left = getCompoundPaddingLeft();
+        result.top = getCompoundPaddingTop();
+        result.right = getWidth()-getCompoundPaddingRight();
+        result.bottom = getHeight()-getCompoundPaddingBottom();
+
+        invalidate(result);
+    }
+
+    /**
+     * 设置文本区域的背景
+     * @param textBackgroundRes 图片资源id
+     */
+    public void setTextBackgroundResourse(@DrawableRes int textBackgroundRes) {
+        this.setTextBackground(getResources().getDrawable(textBackgroundRes));
+    }
+
+    /**
+     * 设置文本区域的背景
+     * @param textBackgroundColor 颜色
+     */
+    public void setTextBackgroundColor(@ColorInt int textBackgroundColor) {
+        this.setTextBackground(new ColorDrawable(textBackgroundColor));
+    }
+
+    public TextBackgroundScope getTextBackgroundScope() {
+        return textBackgroundScope;
+    }
+
+    /**
+     * 设置背景显示区域
+     * @param textBackgroundScope
+     */
+    public void setTextBackgroundScope(TextBackgroundScope textBackgroundScope) {
+        this.textBackgroundScope = textBackgroundScope;
+        Rect result = new Rect();
+
+        result.left = getCompoundPaddingLeft();
+        result.top = getCompoundPaddingTop();
+        result.right = getWidth()-getCompoundPaddingRight();
+        result.bottom = getHeight()-getCompoundPaddingBottom();
+
+        invalidate(result);
+    }
+
+    private Rect getTextBound() {
+        Rect result = new Rect();
+
+        if (textBackgroundScope == TextBackgroundScope.fitDrawablePadding){
+            result.left = getCompoundPaddingLeft();
+            result.top = getCompoundPaddingTop();
+            result.right = getWidth()-getCompoundPaddingRight();
+            result.bottom = getHeight()-getCompoundPaddingBottom();
+        }else {
+            Layout layout = getLayout();
+            Drawable[] drawables = getCompoundDrawables();
+
+            Drawable drawableLeft = drawables[0];
+            Drawable drawableRight = drawables[2];
+
+            int yOffset = 0;
+            if (drawableLeft != null && drawableRight != null){
+                if (drawableLeft.getBounds().height()>layout.getHeight() || drawableRight.getBounds().height()>layout.getHeight()){
+                    yOffset = (Math.max(drawableLeft.getBounds().height(),drawableRight.getBounds().height()) - layout.getHeight())/2;
+                }
+            }else if (drawableLeft != null){
+                if (drawableLeft.getBounds().height()>layout.getHeight()){
+                    yOffset = (drawableLeft.getBounds().height() - layout.getHeight())/2;
+                }
+            }else if (drawableRight != null){
+                if (drawableRight.getBounds().height()>layout.getHeight()){
+                    yOffset = (drawableRight.getBounds().height() - layout.getHeight())/2;
+                }
+            }
+            getLineLeftRight(result);
+            result.top = result.top+yOffset;
+            result.bottom =result.bottom  + yOffset;
+        }
+        return result;
+    }
+
+    private void getLineLeftRight(Rect bound){
+        Layout layout = getLayout();
+        int lineCount = layout.getLineCount();
+        float left = getWidth();
+        float right = 0;
+        float top = getHeight();
+        float bottom = 0;
+        for (int i = 0; i < lineCount; i++) {
+            float lineLeft = layout.getLineLeft(i);
+            if (lineLeft<left){
+                left = lineLeft;
+            }
+            float lineRight = layout.getLineRight(i);
+            if (lineRight>right){
+                right = lineRight;
+            }
+
+            float lineTop = layout.getLineTop(i);
+            if (lineTop<top){
+                top = lineTop;
+            }
+            float lineBottom = layout.getLineBottom(i);
+            if (lineBottom>bottom){
+                bottom = lineBottom;
+            }
+
+        }
+//        bound.left = getCompoundPaddingLeft();
+//        bound.right = getWidth() - getCompoundPaddingRight();
+        bound.left = (int) left+getCompoundPaddingLeft();
+        bound.right = (int) right+getCompoundPaddingLeft();
+
+        bound.top = (int) top+getCompoundPaddingTop();
+        bound.bottom = (int) bottom+getCompoundPaddingTop();
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (textBackground != null){
+            Rect result = getTextBound();
+            textBackground.setBounds(result);
+            textBackground.draw(canvas);
+        }
+        super.onDraw(canvas);
     }
 }

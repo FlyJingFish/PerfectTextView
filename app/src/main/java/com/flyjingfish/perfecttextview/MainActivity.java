@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.flyjingfish.perfecttextview.databinding.ActivityMainBinding;
+import com.flyjingfish.perfecttextviewlib.PerfectTextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnClickListener(v -> {
             Toast.makeText(this,"setOnClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnClickListener");
-        });
+        }, PerfectTextView.OnClickScope.textScope);
         binding.hollowTextView.setOnLongClickListener(v -> {
             Toast.makeText(this,"setOnLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnLongClickListener");
@@ -130,13 +131,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         binding.button1.setOnClickListener(v -> {
-            binding.hollowTextView.setDrawableStartWidthHeight(100,100);
-            binding.hollowTextView.setSelected(true);
-            binding.hollowTextView3.setSelected(true);
+//            binding.hollowTextView.setDrawableStartWidthHeight(100,100);
+            binding.hollowTextView.setSelected(!binding.hollowTextView.isSelected());
+            binding.hollowTextView3.setSelected(!binding.hollowTextView3.isSelected());
         });
         binding.button2.setOnClickListener(v -> {
 //            binding.hollowTextView.setDrawableStartPadding(100);
-            binding.hollowTextView.setCompoundDrawablePadding(100);
+//            binding.hollowTextView.setCompoundDrawablePadding(100);
+//            binding.hollowTextView.setText("333");
+//            binding.hollowTextView.setDefaultText("111");
+//            binding.hollowTextView.setSelectedText("222");
+            binding.hollowTextView.setTextBackgroundScope(PerfectTextView.TextBackgroundScope.fitDrawablePadding);
         });
 
         binding.hollowTextView3.setOnClickListener(new View.OnClickListener() {

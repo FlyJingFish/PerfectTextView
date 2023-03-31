@@ -63,26 +63,30 @@
 
 ### 属性一览
 
-| attr                           |  format   |    description     |
-|--------------------------------|:---------:|:------------------:|
-| perfect_drawableStart_width    | dimension |   左侧（Rtl：右侧）图片宽度   |
-| perfect_drawableStart_height   | dimension |   左侧（Rtl：右侧）图片高度   |
-| perfect_drawableStart_padding  | dimension | 左侧（Rtl：右侧）图片距离文本距离 |
-| perfect_drawableEnd_width      | dimension |   右侧（Rtl：左侧）图片宽度   |
-| perfect_drawableEnd_height     | dimension |   右侧（Rtl：左侧）图片高度   |
-| perfect_drawableEnd_padding    | dimension | 右侧（Rtl：左侧）图片距离文本距离 |
-| perfect_drawableLeft_width     | dimension |       左侧图片宽度       |
-| perfect_drawableLeft_height    | dimension |       左侧图片高度       |
-| perfect_drawableLeft_padding   | dimension |     左侧图片距离文本距离     |
-| perfect_drawableRight_width    | dimension |       右侧图片宽度       |
-| perfect_drawableRight_height   | dimension |       右侧图片高度       |
-| perfect_drawableRight_padding  | dimension |     右侧图片距离文本距离     |
-| perfect_drawableTop_width      | dimension |       上侧图片宽度       |
-| perfect_drawableTop_height     | dimension |       上侧图片高度       |
-| perfect_drawableTop_padding    | dimension |     上侧图片距离文本距离     |
-| perfect_drawableBottom_width   | dimension |       下侧图片宽度       |
-| perfect_drawableBottom_height  | dimension |       下侧图片高度       |
-| perfect_drawableBottom_padding | dimension |     下侧图片距离文本距离     |
+| attr                           |     format      |                                     description                                      |
+|--------------------------------|:---------------:|:------------------------------------------------------------------------------------:|
+| perfect_drawableStart_width    |    dimension    |                                    左侧（Rtl：右侧）图片宽度                                    |
+| perfect_drawableStart_height   |    dimension    |                                    左侧（Rtl：右侧）图片高度                                    |
+| perfect_drawableStart_padding  |    dimension    |                                  左侧（Rtl：右侧）图片距离文本距离                                  |
+| perfect_drawableEnd_width      |    dimension    |                                    右侧（Rtl：左侧）图片宽度                                    |
+| perfect_drawableEnd_height     |    dimension    |                                    右侧（Rtl：左侧）图片高度                                    |
+| perfect_drawableEnd_padding    |    dimension    |                                  右侧（Rtl：左侧）图片距离文本距离                                  |
+| perfect_drawableLeft_width     |    dimension    |                                        左侧图片宽度                                        |
+| perfect_drawableLeft_height    |    dimension    |                                        左侧图片高度                                        |
+| perfect_drawableLeft_padding   |    dimension    |                                      左侧图片距离文本距离                                      |
+| perfect_drawableRight_width    |    dimension    |                                        右侧图片宽度                                        |
+| perfect_drawableRight_height   |    dimension    |                                        右侧图片高度                                        |
+| perfect_drawableRight_padding  |    dimension    |                                      右侧图片距离文本距离                                      |
+| perfect_drawableTop_width      |    dimension    |                                        上侧图片宽度                                        |
+| perfect_drawableTop_height     |    dimension    |                                        上侧图片高度                                        |
+| perfect_drawableTop_padding    |    dimension    |                                      上侧图片距离文本距离                                      |
+| perfect_drawableBottom_width   |    dimension    |                                        下侧图片宽度                                        |
+| perfect_drawableBottom_height  |    dimension    |                                        下侧图片高度                                        |
+| perfect_drawableBottom_padding |    dimension    |                                      下侧图片距离文本距离                                      |
+| perfect_selected_text          |     string      |                                        选中时文本                                         |
+| perfect_default_text           |     string      |                                        未选中时文本                                        |
+| perfect_text_background        | reference/color |                                        文本区域背景                                        |
+| perfect_text_background_scope  |      enum       | wrappedText(紧紧包裹文本)/fitDrawablePadding(适应到四个方向的Drawable并与drawable距离为drawablePadding) |
 
 ### 设置监听
 
