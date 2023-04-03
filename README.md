@@ -83,8 +83,7 @@
 | perfect_drawableBottom_width   |    dimension    |                                        下侧图片宽度                                        |
 | perfect_drawableBottom_height  |    dimension    |                                        下侧图片高度                                        |
 | perfect_drawableBottom_padding |    dimension    |                                      下侧图片距离文本距离                                      |
-| perfect_selected_text          |     string      |                                        选中时文本                                         |
-| perfect_default_text           |     string      |                                        未选中时文本                                        |
+| perfect_selected_text          |     string      |                                选中时文本（原来的 text 是默认文本）                                 |
 | perfect_text_background        | reference/color |                                        文本区域背景                                        |
 | perfect_text_background_scope  |      enum       | wrappedText(紧紧包裹文本)/fitDrawablePadding(适应到四个方向的Drawable并与drawable距离为drawablePadding) |
 
@@ -110,16 +109,22 @@ binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
 
 ### 更多功能
 
-| attr                                              |                description                 |
-|---------------------------------------------------|:------------------------------------------:|
-| setTextBackground                                 |                   文本区域背景                   |
-| setTextBackgroundResource                         |                   文本区域背景                   |
-| setTextBackgroundColor                            |                   文本区域背景                   |
-| setTextBackgroundScope                            |                 文本区域背景显示区域                 |
-| setDrawableStartSelected/setDrawableEndSelected等等 |                    图片选中                    |
-| setDefaultText                                    |                    默认文本                    |
-| setSelectedText                                   |                    选中文本                    |
-| setText                                           | 这是TextView默认的方法，一般不要调用它，如果调用它则会更新当前选中状态的文本 |
+| attr                                                                        |       description       |
+|-----------------------------------------------------------------------------|:-----------------------:|
+| setTextBackground                                                           |         文本区域背景          |
+| setTextBackgroundResource                                                   |         文本区域背景          |
+| setTextBackgroundColor                                                      |         文本区域背景          |
+| setTextBackgroundScope                                                      |       文本区域背景显示区域        |
+| setDrawableStartSelected/setDrawableEndSelected等等                           |          图片选中           |
+| setDrawableStart/setDrawableEnd等等                                           |      单独为四个位置之一设置图片      |
+| setOnDrawableStartClickListener/setOnDrawableEndClickListener等等             |     单独为四个位置之一设置点击监听     |
+| setOnDrawableStartLongClickListener/setOnDrawableEndLongClickListener       |     单独为四个位置之一设置长按监听     |
+| setOnDrawableStartDoubleClickListener/setOnDrawableEndDoubleClickListener等等 |     单独为四个位置之一设置双击监听     |
+| setOnClickListener(OnClickListener l, ClickScope clickScope)                | 点击监听，clickScoped点击的区域范围 |
+| setOnLongClickListener(OnLongClickListener l, ClickScope clickScope)        | 长按监听，clickScoped点击的区域范围 |
+| setOnDoubleClickListener(OnClickListener l, ClickScope clickScope)          | 双击监听，clickScoped点击的区域范围 |
+| setSelectedText                                                             |          选中文本           |
+| setText                                                                     |          默认文本           |
 
 # 最后推荐我写的另一个库，轻松实现在应用内点击小图查看大图的动画放大效果
 

@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.LayoutDirection;
 import android.view.GestureDetector;
@@ -50,12 +49,28 @@ public class PerfectTextView extends AppCompatTextView {
     private CharSequence defaultText;
     private Drawable textBackground;
     private TextBackgroundScope textBackgroundScope;
-    private OnClickScope onClickScope = OnClickScope.allScope;
+    private ClickScope clickScope = ClickScope.allScope;
+    private ClickScope longClickScope = ClickScope.allScope;
+    private ClickScope doubleClickScope = ClickScope.allScope;
     public enum TextBackgroundScope{
-        wrappedText, fitDrawablePadding;
+        /**
+         * 包裹文本的区域
+         */
+        wrappedText,
+        /**
+         * 包裹文本且到四个方向 DrawablePadding 的位置
+         */
+        fitDrawablePadding
     }
-    public enum OnClickScope{
-        textScope,allScope;
+    public enum ClickScope {
+        /**
+         * 文本区域
+         */
+        textScope,
+        /**
+         * 整个PerfectTextView的区域
+         */
+        allScope
     }
 
     public PerfectTextView(@NonNull Context context) {
@@ -100,17 +115,11 @@ public class PerfectTextView extends AppCompatTextView {
         drawableRightPadding = typedArray.getDimensionPixelOffset(R.styleable.PerfectTextView_perfect_drawableRight_padding, pad);
 
         selectedText = typedArray.getText(R.styleable.PerfectTextView_perfect_selected_text);
-        defaultText = typedArray.getText(R.styleable.PerfectTextView_perfect_default_text);
         textBackground = typedArray.getDrawable(R.styleable.PerfectTextView_perfect_text_background);
         int textBackgroundScopeInt = typedArray.getInt(R.styleable.PerfectTextView_perfect_text_background_scope,0);
         textBackgroundScope = TextBackgroundScope.values()[textBackgroundScopeInt];
 
-        CharSequence text = getText();
-        if (TextUtils.isEmpty(defaultText)){
-            defaultText = text;
-        }else {
-            setText(defaultText);
-        }
+        defaultText = getText();
 
         typedArray.recycle();
 
@@ -189,8 +198,6 @@ public class PerfectTextView extends AppCompatTextView {
 
     @Override
     public void setCompoundDrawables(@Nullable Drawable left, @Nullable Drawable top, @Nullable Drawable right, @Nullable Drawable bottom) {
-//        setDrawableWidthHeight(left, drawableLeftWidth, drawableLeftHeight);
-//        setDrawableWidthHeight(right, drawableRightWidth, drawableRightHeight);
         setDrawableWidthHeight(top, drawableTopWidth, drawableTopHeight);
         setDrawableWidthHeight(bottom, drawableBottomWidth, drawableBottomHeight);
         if (isRtl){
@@ -207,8 +214,6 @@ public class PerfectTextView extends AppCompatTextView {
     public void setCompoundDrawablesRelative(@Nullable Drawable start, @Nullable Drawable top, @Nullable Drawable end, @Nullable Drawable bottom) {
         setDrawableWidthHeight(top, drawableTopWidth, drawableTopHeight);
         setDrawableWidthHeight(bottom, drawableBottomWidth, drawableBottomHeight);
-//        setDrawableWidthHeight(start, drawableStartWidth !=0 ?drawableStartWidth:drawableLeftWidth, drawableStartHeight!=0?drawableStartHeight:drawableLeftHeight);
-//        setDrawableWidthHeight(end, drawableEndWidth, drawableEndHeight);
         if (isRtl){
             setDrawableWidthHeight(start, drawableStartWidth != 0 ? drawableStartWidth : drawableRightWidth, drawableStartHeight != 0 ? drawableStartHeight : drawableRightHeight);
             setDrawableWidthHeight(end, drawableEndWidth != 0 ? drawableEndWidth : drawableLeftWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableLeftHeight);
@@ -217,6 +222,130 @@ public class PerfectTextView extends AppCompatTextView {
             setDrawableWidthHeight(end, drawableEndWidth != 0 ? drawableEndWidth : drawableRightWidth, drawableEndHeight != 0 ? drawableEndHeight : drawableRightHeight);
         }
         super.setCompoundDrawablesRelative(start, top, end, bottom);
+    }
+
+    public void setDrawableStart(Drawable drawableStart){
+        Drawable[] drawablesRelative = getCompoundDrawablesRelative();
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableTop = drawables[1];
+        Drawable drawableRight = drawables[2];
+        Drawable drawableBottom = drawables[3];
+
+        Drawable drawableEnd = drawablesRelative[2];
+
+        if (isRtl){
+            setCompoundDrawablesRelative(drawableStart, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableLeft, drawableBottom);
+        }else {
+            setCompoundDrawablesRelative(drawableStart, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableRight, drawableBottom);
+        }
+    }
+
+    public void setDrawableEnd(Drawable drawableEnd){
+        Drawable[] drawablesRelative = getCompoundDrawablesRelative();
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableTop = drawables[1];
+        Drawable drawableRight = drawables[2];
+        Drawable drawableBottom = drawables[3];
+
+        Drawable drawableStart = drawablesRelative[0];
+
+        if (isRtl){
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableRight, drawableTop,
+                    drawableEnd, drawableBottom);
+        }else {
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableLeft, drawableTop,
+                    drawableEnd, drawableBottom);
+        }
+    }
+
+    public void setDrawableLeft(Drawable drawableLeft){
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableTop = drawables[1];
+        Drawable drawableRight = drawables[2];
+        Drawable drawableBottom = drawables[3];
+
+        setCompoundDrawables(drawableLeft, drawableTop,drawableRight, drawableBottom);
+    }
+
+    public void setDrawableRight(Drawable drawableRight){
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableTop = drawables[1];
+        Drawable drawableBottom = drawables[3];
+
+        setCompoundDrawables(drawableLeft, drawableTop,drawableRight, drawableBottom);
+    }
+
+    public void setDrawableTop(Drawable drawableTop){
+        Drawable[] drawablesRelative = getCompoundDrawablesRelative();
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableRight = drawables[2];
+        Drawable drawableBottom = drawables[3];
+
+        Drawable drawableStart = drawablesRelative[0];
+        Drawable drawableEnd = drawablesRelative[2];
+
+        if (isRtl){
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableRight, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableLeft, drawableBottom);
+        }else {
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableLeft, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableRight, drawableBottom);
+        }
+    }
+
+    public void setDrawableBottom(Drawable drawableBottom){
+        Drawable[] drawablesRelative = getCompoundDrawablesRelative();
+        Drawable[] drawables = getCompoundDrawables();
+
+        Drawable drawableLeft = drawables[0];
+        Drawable drawableTop = drawables[1];
+        Drawable drawableRight = drawables[2];
+
+        Drawable drawableStart = drawablesRelative[0];
+        Drawable drawableEnd = drawablesRelative[2];
+
+        if (isRtl){
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableRight, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableLeft, drawableBottom);
+        }else {
+            setCompoundDrawablesRelative(drawableStart != null ? drawableStart : drawableLeft, drawableTop,
+                    drawableEnd != null ? drawableEnd : drawableRight, drawableBottom);
+        }
+    }
+
+    public void setDrawableStart(@DrawableRes int drawableStart){
+        setDrawableStart(getResources().getDrawable(drawableStart));
+    }
+
+    public void setDrawableEnd(@DrawableRes int drawableEnd){
+        setDrawableEnd(getResources().getDrawable(drawableEnd));
+    }
+
+    public void setDrawableLeft(@DrawableRes int drawableLeft){
+        setDrawableLeft(getResources().getDrawable(drawableLeft));
+    }
+
+    public void setDrawableRight(@DrawableRes int drawableRight){
+        setDrawableRight(getResources().getDrawable(drawableRight));
+    }
+
+    public void setDrawableTop(@DrawableRes int drawableTop){
+        setDrawableTop(getResources().getDrawable(drawableTop));
+    }
+
+    public void setDrawableBottom(@DrawableRes int drawableBottom){
+        setDrawableBottom(getResources().getDrawable(drawableBottom));
     }
 
     @Override
@@ -493,21 +622,31 @@ public class PerfectTextView extends AppCompatTextView {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        setOnClickListener(l,OnClickScope.allScope);
+        setOnClickListener(l, ClickScope.allScope);
     }
 
-    public void setOnClickListener(@Nullable OnClickListener l,OnClickScope onClickScope) {
+    public void setOnClickListener(@Nullable OnClickListener l, ClickScope clickScope) {
         onClickListener = l;
-        this.onClickScope = onClickScope;
+        this.clickScope = clickScope;
     }
 
     @Override
-    public void setOnLongClickListener(OnLongClickListener l) {
-        onLongClickListener = l;
+    public void setOnLongClickListener(@Nullable OnLongClickListener l) {
+        setOnLongClickListener(l,ClickScope.allScope);
     }
 
-    public void setOnDoubleClickListener(OnClickListener l) {
+    public void setOnLongClickListener(@Nullable OnLongClickListener l, ClickScope clickScope) {
+        onLongClickListener = l;
+        this.longClickScope = clickScope;
+    }
+
+    public void setOnDoubleClickListener(@Nullable OnClickListener l) {
+        setOnDoubleClickListener(l,ClickScope.allScope);
+    }
+
+    public void setOnDoubleClickListener(@Nullable OnClickListener l, ClickScope clickScope) {
         onDoubleClickListener = l;
+        this.doubleClickScope = clickScope;
     }
 
     private final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
@@ -699,16 +838,19 @@ public class PerfectTextView extends AppCompatTextView {
                 int top = getCompoundPaddingTop();
                 int right = getWidth()-getCompoundPaddingRight();
                 int bottom = getHeight()-getCompoundPaddingBottom();
-                if (onClickScope == OnClickScope.allScope
-                        ||(onClickScope == OnClickScope.textScope && e.getX() >= left && e.getX() <= right &&
-                        e.getY() >= top && e.getY() <= bottom)){
-                    if (clickType == ClickType.Click && onClickListener != null) {
-                        onClickListener.onClick(PerfectTextView.this);
-                    } else if (clickType == ClickType.LongClick && onLongClickListener != null) {
-                        onLongClickListener.onLongClick(PerfectTextView.this);
-                    } else if (clickType == ClickType.DoubleClick && onDoubleClickListener != null) {
-                        onDoubleClickListener.onClick(PerfectTextView.this);
-                    }
+                boolean isInTextScope = e.getX() >= left && e.getX() <= right &&
+                        e.getY() >= top && e.getY() <= bottom;
+                if (clickType == ClickType.Click && onClickListener != null && (clickScope == ClickScope.allScope
+                        ||(clickScope == ClickScope.textScope && isInTextScope))){
+                    onClickListener.onClick(PerfectTextView.this);
+                }
+                if (clickType == ClickType.LongClick && onLongClickListener != null && (longClickScope == ClickScope.allScope
+                        ||(longClickScope == ClickScope.textScope && isInTextScope))){
+                    onLongClickListener.onLongClick(PerfectTextView.this);
+                }
+                if (clickType == ClickType.DoubleClick && onDoubleClickListener != null && (doubleClickScope == ClickScope.allScope
+                        ||(doubleClickScope == ClickScope.textScope && isInTextScope))){
+                    onDoubleClickListener.onClick(PerfectTextView.this);
                 }
             }
         }
@@ -815,10 +957,8 @@ public class PerfectTextView extends AppCompatTextView {
         int right = getWidth()-getCompoundPaddingRight();
         int bottom = getHeight()-getCompoundPaddingBottom();
         if (!isClick && onClickListener != null) {
-            if (onClickScope == OnClickScope.textScope && e.getX() >= left && e.getX() <= right &&
-                    e.getY() >= top && e.getY() <= bottom){
-                setPressed(true);
-            }else if (onClickScope == OnClickScope.allScope){
+            if (clickScope == ClickScope.allScope || (clickScope == ClickScope.textScope && e.getX() >= left && e.getX() <= right &&
+                    e.getY() >= top && e.getY() <= bottom)){
                 setPressed(true);
             }
         }
@@ -917,19 +1057,21 @@ public class PerfectTextView extends AppCompatTextView {
         setText();
         setSelected(textBackground,selected);
     }
-
+    private boolean isUpdateDefaultText = true;
     @Override
     public void setText(CharSequence text, BufferType type) {
-        super.setText(text, type);
-        if (isSelected()){
-            selectedText = text;
-        }else {
+        if (isUpdateDefaultText){
             defaultText = text;
         }
+        if (!isUpdateDefaultText || !isSelected()){
+            super.setText(text, type);
+        }
+        isUpdateDefaultText = true;
     }
 
     private void setText(){
-        if (isSelected() && selectedText != null){
+        isUpdateDefaultText = false;
+        if (isSelected()){
             setText(selectedText);
         }else {
             setText(defaultText);
@@ -938,11 +1080,6 @@ public class PerfectTextView extends AppCompatTextView {
 
     public void setSelectedText(CharSequence selectedText) {
         this.selectedText = selectedText;
-        setText();
-    }
-
-    public void setDefaultText(CharSequence defaultText) {
-        this.defaultText = defaultText;
         setText();
     }
 

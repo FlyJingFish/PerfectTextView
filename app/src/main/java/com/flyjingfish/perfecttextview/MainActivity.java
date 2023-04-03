@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView.setOnClickListener(v -> {
             Toast.makeText(this,"setOnClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnClickListener");
-        }, PerfectTextView.OnClickScope.textScope);
+        }, PerfectTextView.ClickScope.textScope);
         binding.hollowTextView.setOnLongClickListener(v -> {
             Toast.makeText(this,"setOnLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnLongClickListener");
@@ -140,14 +140,14 @@ public class MainActivity extends AppCompatActivity {
 //            binding.hollowTextView.setCompoundDrawablePadding(100);
 //            binding.hollowTextView.setText("333");
 //            binding.hollowTextView.setDefaultText("111");
-//            binding.hollowTextView.setSelectedText("222");
+            binding.hollowTextView.setSelectedText("222");
             binding.hollowTextView.setTextBackgroundScope(PerfectTextView.TextBackgroundScope.fitDrawablePadding);
         });
 
         binding.hollowTextView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                binding.hollowTextView.setDrawableLeft(null);
             }
         });
     }

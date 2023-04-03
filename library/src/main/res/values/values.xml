@@ -26,7 +26,6 @@
         <attr name="perfect_drawableRight_padding" format="dimension" />
 
         <attr name="perfect_selected_text" format="string" />
-        <attr name="perfect_default_text" format="string" />
 
         <attr name="perfect_text_background" format="reference|color" />
         <attr name="perfect_text_background_scope" format="enum">
