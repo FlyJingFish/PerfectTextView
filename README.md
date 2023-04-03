@@ -25,7 +25,7 @@
 
 ```gradle
     dependencies {
-        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.5'
+        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.6'
     }
 ```
 ## 第三步，使用说明
@@ -105,7 +105,7 @@ binding.hollowTextView.setOnDrawableStartClickListener(v -> {
 //长按左侧图标监听
 binding.hollowTextView.setOnDrawableStartLongClickListener(v -> {
     Toast.makeText(this,"setOnDrawableStartLongClickListener",Toast.LENGTH_SHORT).show();
-    return false;
+    return true;//false则会继续回调点击事件
 });
 
 //双击左侧图标监听

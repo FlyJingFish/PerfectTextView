@@ -70,32 +70,32 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"setOnDrawableLeftLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableLeftLongClickListener");
 
-            return false;
+            return true;
         });
         binding.hollowTextView.setOnDrawableTopLongClickListener(v -> {
             Toast.makeText(this,"setOnDrawableTopLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableTopLongClickListener");
-            return false;
+            return true;
         });
         binding.hollowTextView.setOnDrawableRightLongClickListener(v -> {
             Toast.makeText(this,"setOnDrawableRightLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableRightLongClickListener");
-            return false;
+            return true;
         });
         binding.hollowTextView.setOnDrawableBottomLongClickListener(v -> {
             Toast.makeText(this,"setOnDrawableBottomLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableBottomLongClickListener");
-            return false;
+            return true;
         });
         binding.hollowTextView.setOnDrawableStartLongClickListener(v -> {
             Toast.makeText(this,"setOnDrawableStartLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableStartLongClickListener");
-            return false;
+            return true;
         });
         binding.hollowTextView.setOnDrawableEndLongClickListener(v -> {
             Toast.makeText(this,"setOnDrawableEndLongClickListener",Toast.LENGTH_SHORT).show();
             Log.e("onClickTouch", "单击 setOnDrawableEndLongClickListener");
-            return false;
+            return true;
         });
 
 
@@ -146,7 +146,16 @@ public class MainActivity extends AppCompatActivity {
         binding.hollowTextView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.hollowTextView.setDrawableLeft(null);
+//                binding.hollowTextView.setDrawableLeft(null);
+                Toast.makeText(MainActivity.this,"hollowTextView3-click",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.hollowTextView3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MainActivity.this,"hollowTextView3-longclick",Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
     }

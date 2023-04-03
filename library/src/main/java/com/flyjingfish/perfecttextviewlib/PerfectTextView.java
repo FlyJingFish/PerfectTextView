@@ -453,15 +453,24 @@ public class PerfectTextView extends AppCompatTextView {
                         }
                     } else if (clickType == ClickType.LongClick) {
                         if (onDrawableLeftLongClickListener != null) {
-                            onDrawableLeftLongClickListener.onLongClick(PerfectTextView.this);
+                            boolean b = onDrawableLeftLongClickListener.onLongClick(PerfectTextView.this);
+                            if (!b){
+                                clickEvent(e,ClickType.Click);
+                            }
                         }
                         if (drawablesRelative[0] == drawableLeft) {
                             if (onDrawableStartLongClickListener != null) {
-                                onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
+                                boolean b = onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
+                                if (!b){
+                                    clickEvent(e,ClickType.Click);
+                                }
                             }
                         } else {
                             if (onDrawableEndLongClickListener != null) {
-                                onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
+                                boolean b = onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
+                                if (!b){
+                                    clickEvent(e,ClickType.Click);
+                                }
                             }
                         }
                     } else if (clickType == ClickType.DoubleClick) {
@@ -494,7 +503,10 @@ public class PerfectTextView extends AppCompatTextView {
                     if (clickType == ClickType.Click && onDrawableTopClickListener != null) {
                         onDrawableTopClickListener.onClick(PerfectTextView.this);
                     } else if (clickType == ClickType.LongClick && onDrawableTopLongClickListener != null) {
-                        onDrawableTopLongClickListener.onLongClick(PerfectTextView.this);
+                        boolean b = onDrawableTopLongClickListener.onLongClick(PerfectTextView.this);
+                        if (!b){
+                            clickEvent(e,ClickType.Click);
+                        }
                     } else if (clickType == ClickType.DoubleClick && onDrawableTopDoubleClickListener != null) {
                         onDrawableTopDoubleClickListener.onClick(PerfectTextView.this);
                     }
@@ -524,15 +536,24 @@ public class PerfectTextView extends AppCompatTextView {
                         }
                     } else if (clickType == ClickType.LongClick) {
                         if (onDrawableRightLongClickListener != null) {
-                            onDrawableRightLongClickListener.onLongClick(PerfectTextView.this);
+                            boolean b = onDrawableRightLongClickListener.onLongClick(PerfectTextView.this);
+                            if (!b){
+                                clickEvent(e,ClickType.Click);
+                            }
                         }
                         if (drawablesRelative[2] == drawableRight) {
                             if (onDrawableEndLongClickListener != null) {
-                                onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
+                                boolean b = onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
+                                if (!b){
+                                    clickEvent(e,ClickType.Click);
+                                }
                             }
                         } else {
                             if (onDrawableStartLongClickListener != null) {
-                                onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
+                                boolean b = onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
+                                if (!b){
+                                    clickEvent(e,ClickType.Click);
+                                }
                             }
                         }
                     } else if (clickType == ClickType.DoubleClick) {
@@ -565,7 +586,10 @@ public class PerfectTextView extends AppCompatTextView {
                     if (clickType == ClickType.Click && onDrawableBottomClickListener != null) {
                         onDrawableBottomClickListener.onClick(PerfectTextView.this);
                     } else if (clickType == ClickType.LongClick && onDrawableBottomLongClickListener != null) {
-                        onDrawableBottomLongClickListener.onLongClick(PerfectTextView.this);
+                        boolean b = onDrawableBottomLongClickListener.onLongClick(PerfectTextView.this);
+                        if (!b){
+                            clickEvent(e,ClickType.Click);
+                        }
                     } else if (clickType == ClickType.DoubleClick && onDrawableBottomDoubleClickListener != null) {
                         onDrawableBottomDoubleClickListener.onClick(PerfectTextView.this);
                     }
@@ -586,7 +610,10 @@ public class PerfectTextView extends AppCompatTextView {
                 }
                 if (clickType == ClickType.LongClick && onLongClickListener != null && (longClickScope == ClickScope.allScope
                         ||(longClickScope == ClickScope.textScope && isInTextScope))){
-                    onLongClickListener.onLongClick(PerfectTextView.this);
+                    boolean b = onLongClickListener.onLongClick(PerfectTextView.this);
+                    if (!b){
+                        clickEvent(e,ClickType.Click);
+                    }
                 }
                 if (clickType == ClickType.DoubleClick && onDoubleClickListener != null && (doubleClickScope == ClickScope.allScope
                         ||(doubleClickScope == ClickScope.textScope && isInTextScope))){
