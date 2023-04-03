@@ -115,10 +115,12 @@ binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
 | setTextBackgroundResource                                                   |                  文本区域背景                  |
 | setTextBackgroundColor                                                      |                  文本区域背景                  |
 | setTextBackgroundScope                                                      |                文本区域背景显示区域                |
+| setDrawableStartWidthHeight/setDrawableEndWidthHeight等等                     |             单独为四个位置之一设置图片宽高              |
+| setDrawableStartPadding/setDrawableEndPadding等等                             |           单独为四个位置之一设置图片距离文本的距离           |
 | setDrawableStartSelected/setDrawableEndSelected等等                           |                   图片选中                   |
 | setDrawableStart/setDrawableEnd等等                                           |              单独为四个位置之一设置图片               |
 | setOnDrawableStartClickListener/setOnDrawableEndClickListener等等             |             单独为四个位置之一设置点击监听              |
-| setOnDrawableStartLongClickListener/setOnDrawableEndLongClickListener       |             单独为四个位置之一设置长按监听              |
+| setOnDrawableStartLongClickListener/setOnDrawableEndLongClickListener等等     |             单独为四个位置之一设置长按监听              |
 | setOnDrawableStartDoubleClickListener/setOnDrawableEndDoubleClickListener等等 |             单独为四个位置之一设置双击监听              |
 | setOnClickListener(OnClickListener l, ClickScope clickScope)                |         点击监听，clickScoped点击的区域范围          |
 | setOnLongClickListener(OnLongClickListener l, ClickScope clickScope)        |         长按监听，clickScoped点击的区域范围          |
