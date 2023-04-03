@@ -25,7 +25,7 @@
 
 ```gradle
     dependencies {
-        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.3'
+        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.4'
     }
 ```
 ## 第三步，使用说明
@@ -84,6 +84,7 @@
 | perfect_drawableBottom_height  |    dimension    |                                        下侧图片高度                                        |
 | perfect_drawableBottom_padding |    dimension    |                                      下侧图片距离文本距离                                      |
 | perfect_selected_text          |     string      |                                选中时文本（原来的 text 是默认文本）                                 |
+| perfect_selected_hint          |     string      |                               选中时提示文本（原来的 hint 是默认文本）                                |
 | perfect_text_background        | reference/color |                                        文本区域背景                                        |
 | perfect_text_background_scope  |      enum       | wrappedText(紧紧包裹文本)/fitDrawablePadding(适应到四个方向的Drawable并与drawable距离为drawablePadding) |
 
@@ -125,8 +126,10 @@ binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
 | setOnClickListener(OnClickListener l, ClickScope clickScope)                |         点击监听，clickScoped点击的区域范围          |
 | setOnLongClickListener(OnLongClickListener l, ClickScope clickScope)        |         长按监听，clickScoped点击的区域范围          |
 | setOnDoubleClickListener(OnClickListener l, ClickScope clickScope)          |         双击监听，clickScoped点击的区域范围          |
-| setSelectedText                                                             |                   选中文本                   |
+| setSelectedText                                                             |                  设置选中文本                  |
 | setText                                                                     |                   默认文本                   |
+| setSelectedHint                                                             |       设置选中时提示文本（不建议再使用setHint方法了）        |
+| setDefaultHint                                                              |       选中未选中时提示文本（不建议再使用setHint方法了）       |
 | setSelectedIgnoreDrawable                                                   | 设置选中状态不会改变四个位置的状态（原来的 setSelected 方法会改变） |
 
 # 最后推荐我写的另一个库，轻松实现在应用内点击小图查看大图的动画放大效果

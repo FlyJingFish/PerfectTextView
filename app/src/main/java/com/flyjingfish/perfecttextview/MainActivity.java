@@ -138,9 +138,8 @@ public class MainActivity extends AppCompatActivity {
         binding.button2.setOnClickListener(v -> {
 //            binding.hollowTextView.setDrawableStartPadding(100);
 //            binding.hollowTextView.setCompoundDrawablePadding(100);
-//            binding.hollowTextView.setText("333");
 //            binding.hollowTextView.setDefaultText("111");
-            binding.hollowTextView.setSelectedText("222");
+//            binding.hollowTextView.setSelectedText("222");
             binding.hollowTextView.setTextBackgroundScope(PerfectTextView.TextBackgroundScope.fitDrawablePadding);
         });
 

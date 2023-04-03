@@ -17,6 +17,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.text.TextUtilsCompat;
 
@@ -47,6 +48,8 @@ public class PerfectTextView extends AppCompatTextView {
     private boolean isRtl;
     private CharSequence selectedText;
     private CharSequence defaultText;
+    private CharSequence selectedHint;
+    private CharSequence defaultHint;
     private Drawable textBackground;
     private TextBackgroundScope textBackgroundScope;
     private ClickScope clickScope = ClickScope.allScope;
@@ -115,11 +118,13 @@ public class PerfectTextView extends AppCompatTextView {
         drawableRightPadding = typedArray.getDimensionPixelOffset(R.styleable.PerfectTextView_perfect_drawableRight_padding, pad);
 
         selectedText = typedArray.getText(R.styleable.PerfectTextView_perfect_selected_text);
+        selectedHint = typedArray.getText(R.styleable.PerfectTextView_perfect_selected_hint);
         textBackground = typedArray.getDrawable(R.styleable.PerfectTextView_perfect_text_background);
         int textBackgroundScopeInt = typedArray.getInt(R.styleable.PerfectTextView_perfect_text_background_scope,0);
         textBackgroundScope = TextBackgroundScope.values()[textBackgroundScopeInt];
 
         defaultText = getText();
+        defaultHint = getHint();
 
         typedArray.recycle();
 
@@ -381,272 +386,6 @@ public class PerfectTextView extends AppCompatTextView {
     @Override
     public int getCompoundPaddingBottom() {
         return super.getCompoundPaddingBottom() + getDrawablePadding(3);
-    }
-
-    public int getDrawableStartWidth() {
-        return drawableStartWidth;
-    }
-
-    public int getDrawableStartHeight() {
-        return drawableStartHeight;
-    }
-
-    public int getDrawableTopWidth() {
-        return drawableTopWidth;
-    }
-
-    public int getDrawableTopHeight() {
-        return drawableTopHeight;
-    }
-
-    public int getDrawableEndWidth() {
-        return drawableEndWidth;
-    }
-
-    public int getDrawableEndHeight() {
-        return drawableEndHeight;
-    }
-
-    public int getDrawableBottomWidth() {
-        return drawableBottomWidth;
-    }
-
-    public int getDrawableBottomHeight() {
-        return drawableBottomHeight;
-    }
-
-    public int getDrawableLeftWidth() {
-        return drawableLeftWidth;
-    }
-
-    public int getDrawableLeftHeight() {
-        return drawableLeftHeight;
-    }
-
-    public int getDrawableRightWidth() {
-        return drawableRightWidth;
-    }
-
-    public int getDrawableRightHeight() {
-        return drawableRightHeight;
-    }
-
-    public int getDrawableStartPadding() {
-        return drawableStartPadding;
-    }
-
-    public int getDrawableTopPadding() {
-        return drawableTopPadding;
-    }
-
-    public int getDrawableEndPadding() {
-        return drawableEndPadding;
-    }
-
-    public int getDrawableBottomPadding() {
-        return drawableBottomPadding;
-    }
-
-    public int getDrawableLeftPadding() {
-        return drawableLeftPadding;
-    }
-
-    public int getDrawableRightPadding() {
-        return drawableRightPadding;
-    }
-
-    public void setDrawableStartWidthHeight(int width, int height) {
-        drawableStartWidth = width;
-        drawableStartHeight = height;
-        initCompoundDrawables();
-    }
-
-    public void setDrawableTopWidthHeight(int width, int height) {
-        drawableTopWidth = width;
-        drawableTopHeight = height;
-        initCompoundDrawables();
-    }
-
-    public void setDrawableEndWidthHeight(int width, int height) {
-        drawableEndWidth = width;
-        drawableEndHeight = height;
-        initCompoundDrawables();
-    }
-
-    public void setDrawableBottomWidthHeight(int width, int height) {
-        drawableBottomWidth = width;
-        drawableBottomHeight = height;
-        initCompoundDrawables();
-    }
-
-    public void setDrawableLeftWidthHeight(int width, int height) {
-        drawableLeftWidth = width;
-        drawableLeftHeight = height;
-        initCompoundDrawables();
-    }
-
-    public void setDrawableRightWidthHeight(int width, int height) {
-        drawableRightWidth = width;
-        drawableRightHeight = height;
-        initCompoundDrawables();
-    }
-
-    public void setDrawableStartPadding(int drawableStartPadding) {
-        this.drawableStartPadding = drawableStartPadding;
-        super.setCompoundDrawablePadding(0);
-    }
-
-    public void setDrawableTopPadding(int drawableTopPadding) {
-        this.drawableTopPadding = drawableTopPadding;
-        super.setCompoundDrawablePadding(0);
-    }
-
-    public void setDrawableEndPadding(int drawableEndPadding) {
-        this.drawableEndPadding = drawableEndPadding;
-        super.setCompoundDrawablePadding(0);
-    }
-
-    public void setDrawableBottomPadding(int drawableBottomPadding) {
-        this.drawableBottomPadding = drawableBottomPadding;
-        super.setCompoundDrawablePadding(0);
-    }
-
-    public void setDrawableLeftPadding(int drawableLeftPadding) {
-        this.drawableLeftPadding = drawableLeftPadding;
-        super.setCompoundDrawablePadding(0);
-    }
-
-    public void setDrawableRightPadding(int drawableRightPadding) {
-        this.drawableRightPadding = drawableRightPadding;
-        super.setCompoundDrawablePadding(0);
-    }
-
-    private OnClickListener onClickListener;
-    private OnLongClickListener onLongClickListener;
-    private OnClickListener onDoubleClickListener;
-    private OnClickListener onDrawableStartClickListener;
-    private OnClickListener onDrawableEndClickListener;
-    private OnClickListener onDrawableLeftClickListener;
-    private OnClickListener onDrawableTopClickListener;
-    private OnClickListener onDrawableRightClickListener;
-    private OnClickListener onDrawableBottomClickListener;
-
-    private OnLongClickListener onDrawableStartLongClickListener;
-    private OnLongClickListener onDrawableEndLongClickListener;
-    private OnLongClickListener onDrawableLeftLongClickListener;
-    private OnLongClickListener onDrawableTopLongClickListener;
-    private OnLongClickListener onDrawableRightLongClickListener;
-    private OnLongClickListener onDrawableBottomLongClickListener;
-
-    private OnClickListener onDrawableStartDoubleClickListener;
-    private OnClickListener onDrawableEndDoubleClickListener;
-    private OnClickListener onDrawableLeftDoubleClickListener;
-    private OnClickListener onDrawableTopDoubleClickListener;
-    private OnClickListener onDrawableRightDoubleClickListener;
-    private OnClickListener onDrawableBottomDoubleClickListener;
-
-    private OnTouchListener onTouchListener;
-
-    public void setOnDrawableStartLongClickListener(OnLongClickListener l) {
-        onDrawableStartLongClickListener = l;
-    }
-
-    public void setOnDrawableEndLongClickListener(OnLongClickListener l) {
-        onDrawableEndLongClickListener = l;
-    }
-
-    public void setOnDrawableLeftLongClickListener(OnLongClickListener l) {
-        onDrawableLeftLongClickListener = l;
-    }
-
-    public void setOnDrawableTopLongClickListener(OnLongClickListener l) {
-        onDrawableTopLongClickListener = l;
-    }
-
-    public void setOnDrawableRightLongClickListener(OnLongClickListener l) {
-        onDrawableRightLongClickListener = l;
-    }
-
-    public void setOnDrawableBottomLongClickListener(OnLongClickListener l) {
-        onDrawableBottomLongClickListener = l;
-    }
-
-    public void setOnDrawableStartDoubleClickListener(OnClickListener l) {
-        onDrawableStartDoubleClickListener = l;
-    }
-
-    public void setOnDrawableEndDoubleClickListener(OnClickListener l) {
-        onDrawableEndDoubleClickListener = l;
-    }
-
-    public void setOnDrawableLeftDoubleClickListener(OnClickListener l) {
-        onDrawableLeftDoubleClickListener = l;
-    }
-
-    public void setOnDrawableTopDoubleClickListener(OnClickListener l) {
-        onDrawableTopDoubleClickListener = l;
-    }
-
-    public void setOnDrawableRightDoubleClickListener(OnClickListener l) {
-        onDrawableRightDoubleClickListener = l;
-    }
-
-    public void setOnDrawableBottomDoubleClickListener(OnClickListener l) {
-        onDrawableBottomDoubleClickListener = l;
-    }
-
-    public void setOnDrawableStartClickListener(OnClickListener l) {
-        onDrawableStartClickListener = l;
-    }
-
-    public void setOnDrawableEndClickListener(OnClickListener l) {
-        onDrawableEndClickListener = l;
-    }
-
-    public void setOnDrawableLeftClickListener(OnClickListener l) {
-        onDrawableLeftClickListener = l;
-    }
-
-    public void setOnDrawableTopClickListener(OnClickListener l) {
-        onDrawableTopClickListener = l;
-    }
-
-
-    public void setOnDrawableRightClickListener(OnClickListener l) {
-        onDrawableRightClickListener = l;
-    }
-
-    public void setOnDrawableBottomClickListener(OnClickListener l) {
-        onDrawableBottomClickListener = l;
-    }
-
-    @Override
-    public void setOnClickListener(@Nullable OnClickListener l) {
-        setOnClickListener(l, ClickScope.allScope);
-    }
-
-    public void setOnClickListener(@Nullable OnClickListener l, ClickScope clickScope) {
-        onClickListener = l;
-        this.clickScope = clickScope;
-    }
-
-    @Override
-    public void setOnLongClickListener(@Nullable OnLongClickListener l) {
-        setOnLongClickListener(l,ClickScope.allScope);
-    }
-
-    public void setOnLongClickListener(@Nullable OnLongClickListener l, ClickScope clickScope) {
-        onLongClickListener = l;
-        this.longClickScope = clickScope;
-    }
-
-    public void setOnDoubleClickListener(@Nullable OnClickListener l) {
-        setOnDoubleClickListener(l,ClickScope.allScope);
-    }
-
-    public void setOnDoubleClickListener(@Nullable OnClickListener l, ClickScope clickScope) {
-        onDoubleClickListener = l;
-        this.doubleClickScope = clickScope;
     }
 
     private final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
@@ -1054,7 +793,7 @@ public class PerfectTextView extends AppCompatTextView {
         setDrawableTopSelected(selected);
         setDrawableRightSelected(selected);
         setDrawableBottomSelected(selected);
-        setText();
+        setSelectText();
         setSelected(textBackground,selected);
     }
 
@@ -1068,7 +807,7 @@ public class PerfectTextView extends AppCompatTextView {
         setDrawableTopSelected(isDrawableTopSelected);
         setDrawableRightSelected(isDrawableRightSelected);
         setDrawableBottomSelected(isDrawableBottomSelected);
-        setText();
+        setSelectText();
         setSelected(textBackground,selected);
     }
 
@@ -1084,18 +823,66 @@ public class PerfectTextView extends AppCompatTextView {
         isUpdateDefaultText = true;
     }
 
-    private void setText(){
+    private void setSelectText(){
         isUpdateDefaultText = false;
         if (isSelected()){
             setText(selectedText);
+            setHint(selectedHint);
         }else {
             setText(defaultText);
+            setHint(defaultHint);
         }
     }
 
+    /**
+     * 设置选中时文本
+     * @param selectedText
+     */
     public void setSelectedText(CharSequence selectedText) {
         this.selectedText = selectedText;
-        setText();
+        setSelectText();
+    }
+
+    /**
+     * 设置选中时文本
+     * @param resid
+     */
+    public void setSelectedText(@StringRes int resid) {
+        setSelectedText(getContext().getResources().getText(resid));
+    }
+
+    /**
+     * 设置默认状态时提示文本
+     * @param defaultHint
+     */
+    public void setDefaultHint(CharSequence defaultHint) {
+        this.defaultHint = defaultHint;
+        setSelectText();
+    }
+
+    /**
+     * 设置选中时提示文本
+     * @param selectedHint
+     */
+    public void setSelectedHint(CharSequence selectedHint) {
+        this.selectedHint = selectedHint;
+        setSelectText();
+    }
+
+    /**
+     * 设置默认状态时提示文本
+     * @param resid
+     */
+    public void setDefaultHint(@StringRes int resid) {
+        setDefaultHint(getContext().getResources().getText(resid));
+    }
+
+    /**
+     * 设置选中时提示文本
+     * @param resid
+     */
+    public void setSelectedHint(@StringRes int resid) {
+        setSelectedHint(getContext().getResources().getText(resid));
     }
 
     @Override
@@ -1157,33 +944,7 @@ public class PerfectTextView extends AppCompatTextView {
         isDrawableBottomSelected = selected;
     }
 
-    public boolean isDrawableStartSelected() {
-        return isRtl ? isDrawableRightSelected : isDrawableLeftSelected;
-    }
 
-    public boolean isDrawableEndSelected() {
-        return isRtl ? isDrawableLeftSelected : isDrawableRightSelected;
-    }
-
-    public boolean isDrawableLeftSelected() {
-        return isDrawableLeftSelected;
-    }
-
-    public boolean isDrawableTopSelected() {
-        return isDrawableTopSelected;
-    }
-
-    public boolean isDrawableRightSelected() {
-        return isDrawableRightSelected;
-    }
-
-    public boolean isDrawableBottomSelected() {
-        return isDrawableBottomSelected;
-    }
-
-    public Drawable getTextBackground() {
-        return textBackground;
-    }
 
     /**
      * 设置文本区域的背景
@@ -1317,5 +1078,301 @@ public class PerfectTextView extends AppCompatTextView {
             textBackground.draw(canvas);
         }
         super.onDraw(canvas);
+    }
+
+    private OnClickListener onClickListener;
+    private OnLongClickListener onLongClickListener;
+    private OnClickListener onDoubleClickListener;
+    private OnClickListener onDrawableStartClickListener;
+    private OnClickListener onDrawableEndClickListener;
+    private OnClickListener onDrawableLeftClickListener;
+    private OnClickListener onDrawableTopClickListener;
+    private OnClickListener onDrawableRightClickListener;
+    private OnClickListener onDrawableBottomClickListener;
+
+    private OnLongClickListener onDrawableStartLongClickListener;
+    private OnLongClickListener onDrawableEndLongClickListener;
+    private OnLongClickListener onDrawableLeftLongClickListener;
+    private OnLongClickListener onDrawableTopLongClickListener;
+    private OnLongClickListener onDrawableRightLongClickListener;
+    private OnLongClickListener onDrawableBottomLongClickListener;
+
+    private OnClickListener onDrawableStartDoubleClickListener;
+    private OnClickListener onDrawableEndDoubleClickListener;
+    private OnClickListener onDrawableLeftDoubleClickListener;
+    private OnClickListener onDrawableTopDoubleClickListener;
+    private OnClickListener onDrawableRightDoubleClickListener;
+    private OnClickListener onDrawableBottomDoubleClickListener;
+
+    private OnTouchListener onTouchListener;
+
+    public void setOnDrawableStartLongClickListener(OnLongClickListener l) {
+        onDrawableStartLongClickListener = l;
+    }
+
+    public void setOnDrawableEndLongClickListener(OnLongClickListener l) {
+        onDrawableEndLongClickListener = l;
+    }
+
+    public void setOnDrawableLeftLongClickListener(OnLongClickListener l) {
+        onDrawableLeftLongClickListener = l;
+    }
+
+    public void setOnDrawableTopLongClickListener(OnLongClickListener l) {
+        onDrawableTopLongClickListener = l;
+    }
+
+    public void setOnDrawableRightLongClickListener(OnLongClickListener l) {
+        onDrawableRightLongClickListener = l;
+    }
+
+    public void setOnDrawableBottomLongClickListener(OnLongClickListener l) {
+        onDrawableBottomLongClickListener = l;
+    }
+
+    public void setOnDrawableStartDoubleClickListener(OnClickListener l) {
+        onDrawableStartDoubleClickListener = l;
+    }
+
+    public void setOnDrawableEndDoubleClickListener(OnClickListener l) {
+        onDrawableEndDoubleClickListener = l;
+    }
+
+    public void setOnDrawableLeftDoubleClickListener(OnClickListener l) {
+        onDrawableLeftDoubleClickListener = l;
+    }
+
+    public void setOnDrawableTopDoubleClickListener(OnClickListener l) {
+        onDrawableTopDoubleClickListener = l;
+    }
+
+    public void setOnDrawableRightDoubleClickListener(OnClickListener l) {
+        onDrawableRightDoubleClickListener = l;
+    }
+
+    public void setOnDrawableBottomDoubleClickListener(OnClickListener l) {
+        onDrawableBottomDoubleClickListener = l;
+    }
+
+    public void setOnDrawableStartClickListener(OnClickListener l) {
+        onDrawableStartClickListener = l;
+    }
+
+    public void setOnDrawableEndClickListener(OnClickListener l) {
+        onDrawableEndClickListener = l;
+    }
+
+    public void setOnDrawableLeftClickListener(OnClickListener l) {
+        onDrawableLeftClickListener = l;
+    }
+
+    public void setOnDrawableTopClickListener(OnClickListener l) {
+        onDrawableTopClickListener = l;
+    }
+
+
+    public void setOnDrawableRightClickListener(OnClickListener l) {
+        onDrawableRightClickListener = l;
+    }
+
+    public void setOnDrawableBottomClickListener(OnClickListener l) {
+        onDrawableBottomClickListener = l;
+    }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        setOnClickListener(l, ClickScope.allScope);
+    }
+
+    public void setOnClickListener(@Nullable OnClickListener l, ClickScope clickScope) {
+        onClickListener = l;
+        this.clickScope = clickScope;
+    }
+
+    @Override
+    public void setOnLongClickListener(@Nullable OnLongClickListener l) {
+        setOnLongClickListener(l,ClickScope.allScope);
+    }
+
+    public void setOnLongClickListener(@Nullable OnLongClickListener l, ClickScope clickScope) {
+        onLongClickListener = l;
+        this.longClickScope = clickScope;
+    }
+
+    public void setOnDoubleClickListener(@Nullable OnClickListener l) {
+        setOnDoubleClickListener(l,ClickScope.allScope);
+    }
+
+    public void setOnDoubleClickListener(@Nullable OnClickListener l, ClickScope clickScope) {
+        onDoubleClickListener = l;
+        this.doubleClickScope = clickScope;
+    }
+
+
+
+    public void setDrawableStartWidthHeight(int width, int height) {
+        drawableStartWidth = width;
+        drawableStartHeight = height;
+        initCompoundDrawables();
+    }
+
+    public void setDrawableTopWidthHeight(int width, int height) {
+        drawableTopWidth = width;
+        drawableTopHeight = height;
+        initCompoundDrawables();
+    }
+
+    public void setDrawableEndWidthHeight(int width, int height) {
+        drawableEndWidth = width;
+        drawableEndHeight = height;
+        initCompoundDrawables();
+    }
+
+    public void setDrawableBottomWidthHeight(int width, int height) {
+        drawableBottomWidth = width;
+        drawableBottomHeight = height;
+        initCompoundDrawables();
+    }
+
+    public void setDrawableLeftWidthHeight(int width, int height) {
+        drawableLeftWidth = width;
+        drawableLeftHeight = height;
+        initCompoundDrawables();
+    }
+
+    public void setDrawableRightWidthHeight(int width, int height) {
+        drawableRightWidth = width;
+        drawableRightHeight = height;
+        initCompoundDrawables();
+    }
+
+    public void setDrawableStartPadding(int drawableStartPadding) {
+        this.drawableStartPadding = drawableStartPadding;
+        super.setCompoundDrawablePadding(0);
+    }
+
+    public void setDrawableTopPadding(int drawableTopPadding) {
+        this.drawableTopPadding = drawableTopPadding;
+        super.setCompoundDrawablePadding(0);
+    }
+
+    public void setDrawableEndPadding(int drawableEndPadding) {
+        this.drawableEndPadding = drawableEndPadding;
+        super.setCompoundDrawablePadding(0);
+    }
+
+    public void setDrawableBottomPadding(int drawableBottomPadding) {
+        this.drawableBottomPadding = drawableBottomPadding;
+        super.setCompoundDrawablePadding(0);
+    }
+
+    public void setDrawableLeftPadding(int drawableLeftPadding) {
+        this.drawableLeftPadding = drawableLeftPadding;
+        super.setCompoundDrawablePadding(0);
+    }
+
+    public void setDrawableRightPadding(int drawableRightPadding) {
+        this.drawableRightPadding = drawableRightPadding;
+        super.setCompoundDrawablePadding(0);
+    }
+
+    public boolean isDrawableStartSelected() {
+        return isRtl ? isDrawableRightSelected : isDrawableLeftSelected;
+    }
+
+    public boolean isDrawableEndSelected() {
+        return isRtl ? isDrawableLeftSelected : isDrawableRightSelected;
+    }
+
+    public boolean isDrawableLeftSelected() {
+        return isDrawableLeftSelected;
+    }
+
+    public boolean isDrawableTopSelected() {
+        return isDrawableTopSelected;
+    }
+
+    public boolean isDrawableRightSelected() {
+        return isDrawableRightSelected;
+    }
+
+    public boolean isDrawableBottomSelected() {
+        return isDrawableBottomSelected;
+    }
+
+    public Drawable getTextBackground() {
+        return textBackground;
+    }
+
+    public int getDrawableStartWidth() {
+        return drawableStartWidth;
+    }
+
+    public int getDrawableStartHeight() {
+        return drawableStartHeight;
+    }
+
+    public int getDrawableTopWidth() {
+        return drawableTopWidth;
+    }
+
+    public int getDrawableTopHeight() {
+        return drawableTopHeight;
+    }
+
+    public int getDrawableEndWidth() {
+        return drawableEndWidth;
+    }
+
+    public int getDrawableEndHeight() {
+        return drawableEndHeight;
+    }
+
+    public int getDrawableBottomWidth() {
+        return drawableBottomWidth;
+    }
+
+    public int getDrawableBottomHeight() {
+        return drawableBottomHeight;
+    }
+
+    public int getDrawableLeftWidth() {
+        return drawableLeftWidth;
+    }
+
+    public int getDrawableLeftHeight() {
+        return drawableLeftHeight;
+    }
+
+    public int getDrawableRightWidth() {
+        return drawableRightWidth;
+    }
+
+    public int getDrawableRightHeight() {
+        return drawableRightHeight;
+    }
+
+    public int getDrawableStartPadding() {
+        return drawableStartPadding;
+    }
+
+    public int getDrawableTopPadding() {
+        return drawableTopPadding;
+    }
+
+    public int getDrawableEndPadding() {
+        return drawableEndPadding;
+    }
+
+    public int getDrawableBottomPadding() {
+        return drawableBottomPadding;
+    }
+
+    public int getDrawableLeftPadding() {
+        return drawableLeftPadding;
+    }
+
+    public int getDrawableRightPadding() {
+        return drawableRightPadding;
     }
 }
