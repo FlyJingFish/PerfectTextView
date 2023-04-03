@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.LayoutDirection;
 import android.view.GestureDetector;
@@ -1000,8 +1001,7 @@ public class PerfectTextView extends AppCompatTextView {
 
     private Rect getTextBound() {
         Rect result = new Rect();
-
-        if (textBackgroundScope == TextBackgroundScope.fitDrawablePadding){
+        if (textBackgroundScope == TextBackgroundScope.fitDrawablePadding || TextUtils.isEmpty(getText())){
             result.left = getCompoundPaddingLeft();
             result.top = getCompoundPaddingTop();
             result.right = getWidth()-getCompoundPaddingRight();
