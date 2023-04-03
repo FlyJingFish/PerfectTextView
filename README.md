@@ -25,7 +25,7 @@
 
 ```gradle
     dependencies {
-        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.2'
+        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.3'
     }
 ```
 ## 第三步，使用说明
@@ -109,22 +109,23 @@ binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
 
 ### 更多功能
 
-| attr                                                                        |       description       |
-|-----------------------------------------------------------------------------|:-----------------------:|
-| setTextBackground                                                           |         文本区域背景          |
-| setTextBackgroundResource                                                   |         文本区域背景          |
-| setTextBackgroundColor                                                      |         文本区域背景          |
-| setTextBackgroundScope                                                      |       文本区域背景显示区域        |
-| setDrawableStartSelected/setDrawableEndSelected等等                           |          图片选中           |
-| setDrawableStart/setDrawableEnd等等                                           |      单独为四个位置之一设置图片      |
-| setOnDrawableStartClickListener/setOnDrawableEndClickListener等等             |     单独为四个位置之一设置点击监听     |
-| setOnDrawableStartLongClickListener/setOnDrawableEndLongClickListener       |     单独为四个位置之一设置长按监听     |
-| setOnDrawableStartDoubleClickListener/setOnDrawableEndDoubleClickListener等等 |     单独为四个位置之一设置双击监听     |
-| setOnClickListener(OnClickListener l, ClickScope clickScope)                | 点击监听，clickScoped点击的区域范围 |
-| setOnLongClickListener(OnLongClickListener l, ClickScope clickScope)        | 长按监听，clickScoped点击的区域范围 |
-| setOnDoubleClickListener(OnClickListener l, ClickScope clickScope)          | 双击监听，clickScoped点击的区域范围 |
-| setSelectedText                                                             |          选中文本           |
-| setText                                                                     |          默认文本           |
+| attr                                                                        |               description                |
+|-----------------------------------------------------------------------------|:----------------------------------------:|
+| setTextBackground                                                           |                  文本区域背景                  |
+| setTextBackgroundResource                                                   |                  文本区域背景                  |
+| setTextBackgroundColor                                                      |                  文本区域背景                  |
+| setTextBackgroundScope                                                      |                文本区域背景显示区域                |
+| setDrawableStartSelected/setDrawableEndSelected等等                           |                   图片选中                   |
+| setDrawableStart/setDrawableEnd等等                                           |              单独为四个位置之一设置图片               |
+| setOnDrawableStartClickListener/setOnDrawableEndClickListener等等             |             单独为四个位置之一设置点击监听              |
+| setOnDrawableStartLongClickListener/setOnDrawableEndLongClickListener       |             单独为四个位置之一设置长按监听              |
+| setOnDrawableStartDoubleClickListener/setOnDrawableEndDoubleClickListener等等 |             单独为四个位置之一设置双击监听              |
+| setOnClickListener(OnClickListener l, ClickScope clickScope)                |         点击监听，clickScoped点击的区域范围          |
+| setOnLongClickListener(OnLongClickListener l, ClickScope clickScope)        |         长按监听，clickScoped点击的区域范围          |
+| setOnDoubleClickListener(OnClickListener l, ClickScope clickScope)          |         双击监听，clickScoped点击的区域范围          |
+| setSelectedText                                                             |                   选中文本                   |
+| setText                                                                     |                   默认文本                   |
+| setSelectedIgnoreDrawable                                                   | 设置选中状态不会改变四个位置的状态（原来的 setSelected 方法会改变） |
 
 # 最后推荐我写的另一个库，轻松实现在应用内点击小图查看大图的动画放大效果
 
