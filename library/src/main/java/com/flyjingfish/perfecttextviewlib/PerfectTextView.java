@@ -7,7 +7,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.util.LayoutDirection;
 import android.view.GestureDetector;
@@ -132,7 +135,6 @@ public class PerfectTextView extends AppCompatTextView {
         super.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                gestureDetector.onTouchEvent(event);
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     setPressed(false, event);
                     setPressed(false);
@@ -140,11 +142,54 @@ public class PerfectTextView extends AppCompatTextView {
                 if (onTouchListener != null) {
                     onTouchListener.onTouch(v, event);
                 }
+                MovementMethod movementMethod = getMovementMethod();
+                CharSequence text = getText();
+                if ((movementMethod != null || onCheckIsTextEditor()) && isEnabled()
+                        && text instanceof Spannable && getLayout() != null) {
+                    boolean handled = false;
+                    Spannable mSpannable = (Spannable) text;
+                    if (movementMethod != null) {
+                        handled |= onSpanTouchEvent( mSpannable, event);
+                    }
+                    int left = getCompoundPaddingLeft();
+                    int top = getCompoundPaddingTop();
+                    int right = getWidth()-getCompoundPaddingRight();
+                    int bottom = getHeight()-getCompoundPaddingBottom();
+                    boolean isInTextScope = event.getX() >= left && event.getX() <= right &&
+                            event.getY() >= top && event.getY() <= bottom;
+                    if (handled && isInTextScope) {
+                        return false;
+                    }
+                }
+                gestureDetector.onTouchEvent(event);
                 return true;
             }
         });
     }
+    public boolean onSpanTouchEvent(Spannable buffer,MotionEvent event) {
+        int action = event.getAction();
 
+        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+
+            x -= getTotalPaddingLeft();
+            y -= getTotalPaddingTop();
+
+            x += getScrollX();
+            y += getScrollY();
+
+            Layout layout = getLayout();
+            int line = layout.getLineForVertical(y);
+            int off = layout.getOffsetForHorizontal(line, x);
+
+            ClickableSpan[] links = buffer.getSpans(off, off, ClickableSpan.class);
+
+            return links.length != 0;
+        }
+
+        return false;
+    }
     private void initCompoundDrawables() {
         Drawable[] drawablesRelative = getCompoundDrawablesRelative();
         Drawable[] drawables = getCompoundDrawables();
