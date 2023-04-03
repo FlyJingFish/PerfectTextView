@@ -166,7 +166,7 @@ public class PerfectTextView extends AppCompatTextView {
             }
         });
     }
-    public boolean onSpanTouchEvent(Spannable buffer,MotionEvent event) {
+    private boolean onSpanTouchEvent(Spannable buffer,MotionEvent event) {
         int action = event.getAction();
 
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
