@@ -1050,6 +1050,20 @@ public class PerfectTextView extends AppCompatTextView {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
+        setDrawableLeftSelected(selected);
+        setDrawableTopSelected(selected);
+        setDrawableRightSelected(selected);
+        setDrawableBottomSelected(selected);
+        setText();
+        setSelected(textBackground,selected);
+    }
+
+    /**
+     * 设置是否选中时不会影响四个方向的Drawable的状态
+     * @param selected 是否选中
+     */
+    public void setSelectedIgnoreDrawable(boolean selected) {
+        super.setSelected(selected);
         setDrawableLeftSelected(isDrawableLeftSelected);
         setDrawableTopSelected(isDrawableTopSelected);
         setDrawableRightSelected(isDrawableRightSelected);
@@ -1057,6 +1071,7 @@ public class PerfectTextView extends AppCompatTextView {
         setText();
         setSelected(textBackground,selected);
     }
+
     private boolean isUpdateDefaultText = true;
     @Override
     public void setText(CharSequence text, BufferType type) {
