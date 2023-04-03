@@ -46,7 +46,7 @@ public class PerfectTextView extends AppCompatTextView {
     private int drawableLeftPadding;
     private int drawableRightPadding;
     private final boolean isInitSuper;
-    private boolean isRtl;
+    private final boolean isRtl;
     private CharSequence selectedText;
     private CharSequence defaultText;
     private CharSequence selectedHint;
@@ -87,9 +87,7 @@ public class PerfectTextView extends AppCompatTextView {
 
     public PerfectTextView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            isRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == LayoutDirection.RTL;
-        }
+        isRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == LayoutDirection.RTL;
         isInitSuper = true;
         int pad = getCompoundDrawablePadding();
         setCompoundDrawablePadding(0);
