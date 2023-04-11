@@ -10,6 +10,19 @@
 
 <img src="https://github.com/FlyJingFish/PerfectTextView/blob/master/screenshot/img.png" width="320px" height="640px" alt="show" />
 
+## 支持的功能
+
+1、四个位置的图片在布局中也可单独设置大小
+
+2、四个位置的图片可以单独设置距离文字的距离
+
+3、四个位置的图片可以设置点击、双击、长按事件监听
+
+4、支持设置选中（setSelected）时的文本
+
+5、支持单独为四个位置中的一个设置大小、图片、距离文本距离
+
+6、支持为文本区域设置背景
 
 ## 第一步，根目录build.gradle
 
