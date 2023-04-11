@@ -158,6 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+//        binding.getRoot().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this,"getRoot-click",Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     public int getScreenHeight() {
