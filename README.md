@@ -8,7 +8,7 @@
 [![GitHub license](https://img.shields.io/github/license/FlyJingFish/PerfectTextView.svg)](https://github.com/FlyJingFish/PerfectTextView/blob/master/LICENSE)
 
 
-<img src="https://github.com/FlyJingFish/PerfectTextView/blob/master/screenshot/img.png" width="320px" height="640px" alt="show" />
+<img src="https://github.com/FlyJingFish/PerfectTextView/blob/master/screenshot/Screenshot_20230411_170238.jpg" width="320px" height="640px" alt="show" />
 
 ## 支持的功能
 
