@@ -38,7 +38,7 @@
 
 ```gradle
     dependencies {
-        implementation 'com.github.FlyJingFish:PerfectTextView:1.1.9'
+        implementation 'com.github.FlyJingFish:PerfectTextView:1.2.0'
     }
 ```
 ## 第三步，使用说明
