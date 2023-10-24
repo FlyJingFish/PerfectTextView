@@ -1,5 +1,6 @@
 package com.flyjingfish.perfecttextviewlib;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -93,6 +94,7 @@ public class PerfectTextView extends AppCompatTextView {
         this(context, attrs, 0);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public PerfectTextView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         isRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == LayoutDirection.RTL;
@@ -452,28 +454,13 @@ public class PerfectTextView extends AppCompatTextView {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            if (clickEvent(e, ClickType.Click)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return clickEventUp(e, ClickType.Click);
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-            super.onShowPress(e);
-
+            return clickEvent(e, ClickType.Click);
         }
 
         @Override
         public boolean onDown(MotionEvent e) {
             setPressed(true, e);
-            return clickEventUp(e, PerfectTextView.ClickType.Click);
+            return true;
         }
 
         private boolean clickEvent(MotionEvent e, ClickType clickType) {
@@ -513,24 +500,15 @@ public class PerfectTextView extends AppCompatTextView {
                         }
                     } else if (clickType == ClickType.LongClick) {
                         if (onDrawableLeftLongClickListener != null) {
-                            boolean b = onDrawableLeftLongClickListener.onLongClick(PerfectTextView.this);
-                            if (!b) {
-                                clickEvent(e, ClickType.Click);
-                            }
+                            returnClick = onDrawableLeftLongClickListener.onLongClick(PerfectTextView.this);
                         }
                         if (drawablesRelative[0] == drawableLeft) {
                             if (onDrawableStartLongClickListener != null) {
-                                boolean b = onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
-                                if (!b) {
-                                    clickEvent(e, ClickType.Click);
-                                }
+                                returnClick = onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
                             }
                         } else {
                             if (onDrawableEndLongClickListener != null) {
-                                boolean b = onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
-                                if (!b) {
-                                    clickEvent(e, ClickType.Click);
-                                }
+                                returnClick = onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
                             }
                         }
                     } else if (clickType == ClickType.DoubleClick) {
@@ -567,10 +545,7 @@ public class PerfectTextView extends AppCompatTextView {
                         onDrawableTopClickListener.onClick(PerfectTextView.this);
                         returnClick = true;
                     } else if (clickType == ClickType.LongClick && onDrawableTopLongClickListener != null) {
-                        boolean b = onDrawableTopLongClickListener.onLongClick(PerfectTextView.this);
-                        if (!b) {
-                            clickEvent(e, ClickType.Click);
-                        }
+                        returnClick = onDrawableTopLongClickListener.onLongClick(PerfectTextView.this);
                     } else if (clickType == ClickType.DoubleClick && onDrawableTopDoubleClickListener != null) {
                         onDrawableTopDoubleClickListener.onClick(PerfectTextView.this);
                         returnClick = true;
@@ -604,24 +579,15 @@ public class PerfectTextView extends AppCompatTextView {
                         }
                     } else if (clickType == ClickType.LongClick) {
                         if (onDrawableRightLongClickListener != null) {
-                            boolean b = onDrawableRightLongClickListener.onLongClick(PerfectTextView.this);
-                            if (!b) {
-                                clickEvent(e, ClickType.Click);
-                            }
+                            returnClick = onDrawableRightLongClickListener.onLongClick(PerfectTextView.this);
                         }
                         if (drawablesRelative[2] == drawableRight) {
                             if (onDrawableEndLongClickListener != null) {
-                                boolean b = onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
-                                if (!b) {
-                                    clickEvent(e, ClickType.Click);
-                                }
+                                returnClick = onDrawableEndLongClickListener.onLongClick(PerfectTextView.this);
                             }
                         } else {
                             if (onDrawableStartLongClickListener != null) {
-                                boolean b = onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
-                                if (!b) {
-                                    clickEvent(e, ClickType.Click);
-                                }
+                                returnClick = onDrawableStartLongClickListener.onLongClick(PerfectTextView.this);
                             }
                         }
                     } else if (clickType == ClickType.DoubleClick) {
@@ -658,10 +624,7 @@ public class PerfectTextView extends AppCompatTextView {
                         onDrawableBottomClickListener.onClick(PerfectTextView.this);
                         returnClick = true;
                     } else if (clickType == ClickType.LongClick && onDrawableBottomLongClickListener != null) {
-                        boolean b = onDrawableBottomLongClickListener.onLongClick(PerfectTextView.this);
-                        if (!b) {
-                            clickEvent(e, ClickType.Click);
-                        }
+                        returnClick = onDrawableBottomLongClickListener.onLongClick(PerfectTextView.this);
                     } else if (clickType == ClickType.DoubleClick && onDrawableBottomDoubleClickListener != null) {
                         onDrawableBottomDoubleClickListener.onClick(PerfectTextView.this);
                         returnClick = true;
@@ -684,10 +647,7 @@ public class PerfectTextView extends AppCompatTextView {
                 }
                 if (clickType == ClickType.LongClick && onLongClickListener != null && (longClickScope == ClickScope.allScope
                         || (longClickScope == ClickScope.textScope && isInTextScope))) {
-                    boolean b = onLongClickListener.onLongClick(PerfectTextView.this);
-                    if (!b) {
-                        clickEvent(e, ClickType.Click);
-                    }
+                    returnClick = onLongClickListener.onLongClick(PerfectTextView.this);
                 }
                 if (clickType == ClickType.DoubleClick && onDoubleClickListener != null && (doubleClickScope == ClickScope.allScope
                         || (doubleClickScope == ClickScope.textScope && isInTextScope))) {
@@ -698,182 +658,6 @@ public class PerfectTextView extends AppCompatTextView {
             return returnClick;
         }
 
-        private boolean clickEventUp(MotionEvent e, ClickType clickType) {
-            Drawable[] drawablesRelative = getCompoundDrawablesRelative();
-            Drawable[] drawables = getCompoundDrawables();
-
-            Drawable drawableTop = drawables[1];
-            Drawable drawableBottom = drawables[3];
-
-            Drawable drawableLeft = drawables[0];
-            Drawable drawableRight = drawables[2];
-            boolean returnClick = false;
-            boolean isClick = false;
-            if (drawableLeft != null) {
-                int left = getPaddingLeft();
-                int right = left + drawableLeft.getBounds().width();
-                int iconMiddleY = (getHeight() - getCompoundPaddingTop() - getCompoundPaddingBottom()) / 2 + getCompoundPaddingTop();
-                int top = iconMiddleY - drawableLeft.getBounds().height() / 2;
-                int bottom = iconMiddleY + drawableLeft.getBounds().height() / 2;
-                if (e.getX() >= left && e.getX() <= right &&
-                        e.getY() >= top && e.getY() <= bottom) {
-                    if (clickType == ClickType.Click) {
-                        if (onDrawableLeftClickListener != null) {
-                            returnClick = true;
-                        }
-                        if (drawablesRelative[0] == drawableLeft) {
-                            if (onDrawableStartClickListener != null) {
-                                returnClick = true;
-                            }
-                        } else {
-                            if (onDrawableEndClickListener != null) {
-                                returnClick = true;
-                            }
-                        }
-                    } else if (clickType == ClickType.LongClick) {
-                        if (onDrawableLeftLongClickListener != null) {
-                            returnClick = true;
-                        }
-                        if (drawablesRelative[0] == drawableLeft) {
-                            if (onDrawableStartLongClickListener != null) {
-                                returnClick = true;
-                            }
-                        } else {
-                            if (onDrawableEndLongClickListener != null) {
-                                returnClick = true;
-                            }
-                        }
-                    } else if (clickType == ClickType.DoubleClick) {
-                        if (onDrawableLeftDoubleClickListener != null) {
-                            returnClick = true;
-                        }
-                        if (drawablesRelative[0] == drawableLeft) {
-                            if (onDrawableStartDoubleClickListener != null) {
-                                returnClick = true;
-                            }
-                        } else {
-                            if (onDrawableEndDoubleClickListener != null) {
-                                returnClick = true;
-                            }
-                        }
-                    }
-
-                    isClick = true;
-                }
-            }
-            if (drawableTop != null) {
-                int iconMiddleX = (getWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight()) / 2 + getCompoundPaddingLeft();
-                int left = iconMiddleX - drawableTop.getBounds().width() / 2;
-                int right = iconMiddleX + drawableTop.getBounds().width() / 2;
-
-                int top = getPaddingTop();
-                int bottom = top + drawableTop.getBounds().height();
-                if (e.getX() >= left && e.getX() <= right &&
-                        e.getY() >= top && e.getY() <= bottom) {
-                    if (clickType == ClickType.Click && onDrawableTopClickListener != null) {
-                        returnClick = true;
-                    } else if (clickType == ClickType.LongClick && onDrawableTopLongClickListener != null) {
-                        returnClick = true;
-                    } else if (clickType == ClickType.DoubleClick && onDrawableTopDoubleClickListener != null) {
-                        returnClick = true;
-                    }
-                    isClick = true;
-                }
-            }
-            if (drawableRight != null) {
-                int right = getWidth() - getPaddingRight();
-                int left = right - drawableRight.getBounds().width();
-                int iconMiddleY = (getHeight() - getCompoundPaddingTop() - getCompoundPaddingBottom()) / 2 + getCompoundPaddingTop();
-                int top = iconMiddleY - drawableRight.getBounds().height() / 2;
-                int bottom = iconMiddleY + drawableRight.getBounds().height() / 2;
-                if (e.getX() >= left && e.getX() <= right &&
-                        e.getY() >= top && e.getY() <= bottom) {
-                    if (clickType == ClickType.Click) {
-                        if (onDrawableRightClickListener != null) {
-                            returnClick = true;
-                        }
-                        if (drawablesRelative[2] == drawableRight) {
-                            if (onDrawableEndClickListener != null) {
-                                returnClick = true;
-                            }
-                        } else {
-                            if (onDrawableStartClickListener != null) {
-                                returnClick = true;
-                            }
-                        }
-                    } else if (clickType == ClickType.LongClick) {
-                        if (onDrawableRightLongClickListener != null) {
-                            returnClick = true;
-                        }
-                        if (drawablesRelative[2] == drawableRight) {
-                            if (onDrawableEndLongClickListener != null) {
-                                returnClick = true;
-                            }
-                        } else {
-                            if (onDrawableStartLongClickListener != null) {
-                                returnClick = true;
-                            }
-                        }
-                    } else if (clickType == ClickType.DoubleClick) {
-                        if (onDrawableRightDoubleClickListener != null) {
-                            returnClick = true;
-                        }
-                        if (drawablesRelative[2] == drawableRight) {
-                            if (onDrawableEndDoubleClickListener != null) {
-                                returnClick = true;
-                            }
-                        } else {
-                            if (onDrawableStartDoubleClickListener != null) {
-                                returnClick = true;
-                            }
-                        }
-                    }
-
-                    isClick = true;
-                }
-            }
-
-            if (drawableBottom != null) {
-                int bottom = getHeight() - getPaddingBottom();
-                int top = bottom - drawableBottom.getBounds().height();
-                int iconMiddleX = (getWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight()) / 2 + getCompoundPaddingLeft();
-                int left = iconMiddleX - drawableBottom.getBounds().width() / 2;
-                int right = iconMiddleX + drawableBottom.getBounds().width() / 2;
-                if (e.getX() >= left && e.getX() <= right &&
-                        e.getY() >= top && e.getY() <= bottom) {
-                    if (clickType == ClickType.Click && onDrawableBottomClickListener != null) {
-                        returnClick = true;
-                    } else if (clickType == ClickType.LongClick && onDrawableBottomLongClickListener != null) {
-                        returnClick = true;
-                    } else if (clickType == ClickType.DoubleClick && onDrawableBottomDoubleClickListener != null) {
-                        returnClick = true;
-                    }
-                    isClick = true;
-                }
-            }
-
-            if (!isClick) {
-                int left = getCompoundPaddingLeft();
-                int top = getCompoundPaddingTop();
-                int right = getWidth() - getCompoundPaddingRight();
-                int bottom = getHeight() - getCompoundPaddingBottom();
-                boolean isInTextScope = e.getX() >= left && e.getX() <= right &&
-                        e.getY() >= top && e.getY() <= bottom;
-                if (clickType == ClickType.Click && onClickListener != null && (clickScope == ClickScope.allScope
-                        || (clickScope == ClickScope.textScope && isInTextScope))) {
-                    returnClick = true;
-                }
-                if (clickType == ClickType.LongClick && onLongClickListener != null && (longClickScope == ClickScope.allScope
-                        || (longClickScope == ClickScope.textScope && isInTextScope))) {
-                    returnClick = true;
-                }
-                if (clickType == ClickType.DoubleClick && onDoubleClickListener != null && (doubleClickScope == ClickScope.allScope
-                        || (doubleClickScope == ClickScope.textScope && isInTextScope))) {
-                    returnClick = true;
-                }
-            }
-            return returnClick;
-        }
 
     });
 
