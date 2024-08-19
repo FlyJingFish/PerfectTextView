@@ -151,9 +151,11 @@ binding.hollowTextView.setOnDrawableStartDoubleClickListener(v -> {
 | setDefaultHint                                                              |       选中未选中时提示文本（不建议再使用setHint方法了）       |
 | setSelectedIgnoreDrawable                                                   | 设置选中状态不会改变四个位置的状态（原来的 setSelected 方法会改变） |
 
-# 最后推荐我写的另一个库，轻松实现在应用内点击小图查看大图的动画放大效果
+## 最后推荐我写的另外一些库
 
-- [OpenImage](https://github.com/FlyJingFish/OpenImage) 
+- [OpenImage 轻松实现在应用内点击小图查看大图的动画放大效果](https://github.com/FlyJingFish/OpenImage)
+
+- [AndroidAOP 一个注解就可请求权限，禁止多点，切换线程等等，更可定制出属于你的 Aop 代码](https://github.com/FlyJingFish/AndroidAOP)
 
 - [主页查看更多开源库](https://github.com/FlyJingFish)
 
