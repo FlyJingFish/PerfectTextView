@@ -142,13 +142,46 @@ public class PerfectTextView extends AppCompatTextView {
         super.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                boolean isTouch = false;
+                if (onTouchListener != null) {
+                    isTouch = onTouchListener.onTouch(v, event);
+                }
+                if (isTouch) {
+                    return true;
+                }
+                boolean hasClick = onClickListener != null ||
+                        onDoubleClickListener != null ||
+                        onLongClickListener != null ||
+                        onDrawableStartClickListener != null ||
+                        onDrawableEndClickListener != null ||
+                        onDrawableLeftClickListener != null ||
+                        onDrawableTopClickListener != null ||
+                        onDrawableRightClickListener != null ||
+                        onDrawableBottomClickListener != null ||
+
+                        onDrawableStartLongClickListener != null ||
+                        onDrawableEndLongClickListener != null ||
+                        onDrawableLeftLongClickListener != null ||
+                        onDrawableTopLongClickListener != null ||
+                        onDrawableRightLongClickListener != null ||
+                        onDrawableBottomLongClickListener != null ||
+
+                        onDrawableStartDoubleClickListener != null ||
+                        onDrawableEndDoubleClickListener != null ||
+                        onDrawableLeftDoubleClickListener != null ||
+                        onDrawableTopDoubleClickListener != null ||
+                        onDrawableRightDoubleClickListener != null ||
+                        onDrawableBottomDoubleClickListener != null;
+
+                if (!hasClick){
+                    return false;
+                }
+
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     setPressed(false, event);
                     setPressed(false);
                 }
-                if (onTouchListener != null) {
-                    onTouchListener.onTouch(v, event);
-                }
+
                 MovementMethod movementMethod = getMovementMethod();
                 CharSequence text = getText();
                 if ((movementMethod != null || onCheckIsTextEditor()) && isEnabled()
